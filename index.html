@@ -100,8 +100,8 @@ function shO(o,oi,a){const p=shuffle(o.keys()),inv=[];p.forEach((k,n)=>inv[k]=n)
 function norm(x){const im=[x.image,x.preImage].find(s=>s)||'',b={q:x.question,img:im,ex:x.explain||'',hint:x.hint||'',imgPos:x.imagePosition,oi:x.optionImages},t=x.type,A=[].concat(x.answer);
  if(t=='single'&&x.options){const r=shO(x.options,b.oi,A);return{...b,oi:r.oi,ty:'single',o:r.o,a:r.a[0]}}
  if(t=='multiple'){const r=shO(x.options,b.oi,A);return{...b,oi:r.oi,ty:'multi',o:r.o,a:r.a}}
- if(t=='list')return{...b,ty:'rows',rows:x.items.map(i=>({l:i.label,o:i.options,a:i.answer}))};
- if(t=='matching')return{...b,ty:'rows',rows:x.left.map((l,i)=>({l,o:x.right,a:x.correctMap[i]}))};
+ if(t=='list')return{...b,ty:'rows',rows:shuffle(x.items.map(i=>({l:i.label,o:i.options,a:i.answer})))};
+ if(t=='matching')return{...b,ty:'rows',rows:shuffle(x.left.map((l,i)=>({l,o:x.right,a:x.correctMap[i]})))};
  if(t=='classify2')return{...b,ty:'slot',items:x.items,zones:x.zones,a:x.answer};
  if(t=='classify')return{...b,ty:'cls',items:x.items,zones:x.zones,a:x.answer};
  if(t=='ordering')return{...b,ty:'ord',items:x.items,a:x.answerOrder||x.items.map((_,i)=>i)};
