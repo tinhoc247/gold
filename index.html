@@ -100,13 +100,33 @@ body:has(.entry.sea){background:linear-gradient(135deg,#22d3ee,#34d399 50%,#bef2
 .ecard .avb{border-radius:14px}
 @media(max-width:480px){.ecard{padding:58px 16px 18px}.etitle{font-size:25px}.ecard #jC{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.entry *{animation:none!important}}
+<style id="smooth-css">
+@keyframes mIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes ovIn{from{opacity:0}to{opacity:1}}
+@keyframes chIn{from{opacity:0;transform:translateY(22px) scale(.6)}to{opacity:1;transform:none}}
+@keyframes shk{0%{transform:rotate(0) scale(1)}15%{transform:rotate(-12deg) scale(1.1)}30%{transform:rotate(11deg) scale(1.15)}45%{transform:rotate(-9deg) scale(1.2)}60%{transform:rotate(7deg) scale(1.25)}80%{transform:rotate(0) scale(1.32)}100%{transform:rotate(0) scale(1.28)}}
+@keyframes glw{from{filter:drop-shadow(0 0 4px #fbbf24)}to{filter:drop-shadow(0 0 16px #f59e0b)}}
+@keyframes pop{from{transform:scale(.3) rotate(-15deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes nb{to{transform:scaleX(0)}}
+@keyframes rtry{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#modal.show{animation:ovIn .2s ease-out}
+#modal .box.in{animation:mIn .26s cubic-bezier(.2,.8,.3,1)}
+.mr3{animation:chIn .42s cubic-bezier(.2,1.4,.4,1) both;transition:opacity .3s,transform .25s}
+.mirrors .mr3:nth-child(2){animation-delay:.08s}.mirrors .mr3:nth-child(3){animation-delay:.16s}
+.mirrors.go2 .mr3:not(.op){opacity:.25;transform:scale(.88)}
+.mr3.op,.mr3.op:disabled{opacity:1;animation:shk .65s ease-in-out both,glw .7s ease-in-out .65s infinite alternate}
+.pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+.nbar{height:5px;border-radius:5px;background:#0001;margin-top:12px;overflow:hidden}.nbar i{display:block;height:100%;background:#f59e0b;transform-origin:left;animation:nb 3.3s linear forwards}
+.wt{animation:ovIn .3s .45s both}.tg2:disabled{opacity:.6}
+.retry{background:#fee2e2;color:#7f1d1d;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:8px;animation:rtry .4s}.retry small{display:block;font-weight:500;font-size:13px;opacity:.85}
+@media (prefers-reduced-motion:reduce){#modal.show,#modal .box.in,.mr3,.mr3.op,.pop,.retry{animation:none!important}}
 </style></head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
 
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CFG=window.FBCFG,ADM=window.APPMODE=='admin';let TOK=null,RT=null,ME=null,ADMPW=null,OFF=0,busy=false,DRG=-1,SK=0,CQ=null,CB=null,RCB=null,IU=null,DQ=null,H=[],ST={ok:0,bad:0},T=[{name:''}],cur=0,Q=[],CUR=[],RAW=null;const IM={},HW={on:false};
 const now=()=>Date.now()+OFF,ID=n=>Array.from({length:n},()=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[Math.random()*31|0]).join(''),G=p=>'gold/'+p;
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
-function modal(h){$('#mbox').innerHTML=h;$('#modal').style.display='flex'}function close_(){$('#modal').style.display='none'}
+function modal(h){const m=$('#modal'),b=$('#mbox'),was=m.style.display=='flex';b.classList.remove('wait');b.innerHTML=h;m.style.display='flex';b.classList.remove('in');void b.offsetWidth;b.classList.add('in');if(!was){m.classList.remove('show');void m.offsetWidth;m.classList.add('show')}}function close_(){$('#modal').style.display='none'}
 const fmtT=ms=>{ms=Math.max(0,ms);return Math.floor(ms/60000)+':'+String(Math.floor(ms/1000)%60).padStart(2,'0')};
 async function fbAuth(){const b=ADM?{email:CFG.adminEmail,password:ADMPW,returnSecureToken:true}:{returnSecureToken:true};
  const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:'+(ADM?'signInWithPassword':'signUp')+'?key='+CFG.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}),j=await r.json();
@@ -128,7 +148,7 @@ function toQ(r){r=r.map(x=>x==null?'':String(x).trim());const o=r.slice(1,5).fil
  if(/^[A-Da-d]$/.test(a))i=a.toUpperCase().charCodeAt(0)-65;else if(/^[1-4]$/.test(a))i=+a-1;else i=o.findIndex(x=>x==a);
  return(!r[0]||o.length<2||i<0||i>=o.length)?null:{q:r[0],o,a:i,img:r[6]||''}}
 function shO(o,oi,a){const p=shuffle(o.keys()),inv=[];p.forEach((k,n)=>inv[k]=n);let ni=oi;if(oi){ni=Array.isArray(oi)?p.map(k=>oi[k]):Object.fromEntries(p.map((k,n)=>[n,oi[k]]).filter(e=>e[1]))}return{o:p.map(k=>o[k]),oi:ni,a:a.map(v=>inv[v])}}
-function norm(x){const im=[x.image,x.preImage].find(s=>s)||'',b={q:x.question,img:im,ex:x.explain||'',hint:x.hint||'',imgPos:x.imagePosition,oi:x.optionImages},t=x.type,A=[].concat(x.answer);
+function norm(x,rt){rt=rt===true;const im=[x.image,x.preImage].find(s=>s)||'',b={q:x.question,img:im,ex:x.explain||'',hint:x.hint||'',imgPos:x.imagePosition,oi:x.optionImages},t=x.type,A=[].concat(x.answer);
  if(t=='single'&&x.options){const r=shO(x.options,b.oi,A);return{...b,oi:r.oi,ty:'single',o:r.o,a:r.a[0]}}
  if(t=='multiple'){const r=shO(x.options,b.oi,A);return{...b,oi:r.oi,ty:'multi',o:r.o,a:r.a}}
  if(t=='list')return{...b,ty:'rows',rows:shuffle(x.items.map(i=>({l:i.label,o:i.options,a:i.answer})))};
@@ -139,7 +159,7 @@ function norm(x){const im=[x.image,x.preImage].find(s=>s)||'',b={q:x.question,im
  if(t=='position')return{...b,ty:'pos',tb:x.toolbar,a:x.answer};
  if(t=='imagepoint'&&x.points)return{...b,ty:'pt',pts:x.points,a:A};
  if(t=='dragfill')return{...b,ty:'fill',tpl:x.template||'',o:x.options,a:x.answer,email:x.layout=='email',ef:x.emailFields,es:x.emailSubject,eg:x.emailGreeting,ec:x.emailContentBlank,esg:x.emailSign};
- if(t=='selectfill')return{...b,ty:'sel',tpl:x.template||'',o:x.options,a:x.answer};
+ if(t=='selectfill'){const r=rt&&Array.isArray(x.options)?shO(x.options,null,[].concat(x.answer)):null;return{...b,ty:'sel',tpl:x.template||'',o:r?r.o:x.options,a:r?r.a:x.answer}}
  SK++;return null}
 
 
@@ -150,7 +170,7 @@ function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;if(/^lib:/.test(
 function imgH(s,c){return s?`<img class="${c||'qimg'}" src="${esc(rs(s))}" data-s="${esc(s)}" alt="" onerror="imgErr(this)" onclick="this.classList.toggle('zoom')">`:''}
 async function preImgs(s){const r=[...new Set(String(s||'').match(/lib:[A-Za-z0-9]+:i\d+/g)||[])].filter(k=>!IM['~'+k]);
  for(let i=0;i<r.length;i+=6)await Promise.all(r.slice(i,i+6).map(async k=>{const[,id,key]=k.split(':');try{const v=await fb(G('libimg/'+id+'/'+key));if(typeof v=='string'&&v)IM['~'+k]=v}catch(e){}}))}
-async function qLoad(c){const r=(await fb(G('quiz/'+c)))||'[]';await preImgs(r);return JSON.parse(r).map(norm).filter(Boolean)}
+async function qLoad(c){const r=(await fb(G('quiz/'+c)))||'[]';await preImgs(r);return JSON.parse(r).map(x=>norm(x)).filter(Boolean)}
 function imgErr(e){const x=document.createElement('span');x.className='imgerr';x.textContent='🖼️ Không tải được hình: '+(e.dataset.s||'');e.replaceWith(x)}
 function ob(q,i,p){const o=q.oi&&q.oi[i],m=o&&o.src?imgH(o.src,'oimg'):'',t=(p||'')+esc(q.o[i]);return o&&o.position=='after'?t+m:m+t}
 
@@ -214,7 +234,7 @@ function ptFail(){const q=CQ;const cb_=$('#chk');if(cb_)cb_.remove();$('#ipb').o
 function pick(i,a,el){if(busy)return;const bs=document.querySelectorAll('.opt'),ok=i==a;bs[a].classList.add('ok');if(!ok)el.classList.add('bad');
  if(CQ&&CQ.ex){bs.forEach(b=>b.disabled=true);let f=$('#fb');if(!f){f=document.createElement('div');f.id='fb';$('#mbox').appendChild(f)}
   f.innerHTML=resHtml(ok)+`<button onclick="CB(${ok})">Tiếp tục</button>`;return}
- busy=true;setTimeout(()=>{busy=false;CB(ok)},900)}
+ busy=true;setTimeout(()=>{busy=false;CB(ok)},ok?900:1500)}
 function check(){const q=CQ;let ok=true,m='';
  if(q.ty=='rows'){const v=q.rows.map((r,i)=>$('#sel'+i).value);if(v.includes(''))m='Hãy chọn đủ đáp án cho tất cả các dòng.';else q.rows.forEach((r,i)=>{const g=[].concat(r.a).includes(+v[i]);ok=ok&&g;$('#mk'+i).innerHTML=g?'<span style="color:var(--okc)">✅ Chính xác</span>':'<span style="color:var(--badc)">❌ Chưa đúng.</span> Đáp án đúng: <b style="color:var(--okc)">'+esc(r.o[[].concat(r.a)[0]])+'</b>';$('#rw'+i).classList.add(g?'ok':'bad');$('#sel'+i).disabled=true})}
  else{const s=[...document.querySelectorAll('.tg')],v=s.filter(b=>b.classList.contains('sel')).map(b=>+b.dataset.i);if(!v.length)m='Hãy chọn ít nhất 1 đáp án.';else{ok=v.length==q.a.length&&v.every(i=>q.a.includes(i));s.forEach((b,i)=>{b.disabled=true;if(q.a.includes(i))b.classList.add('ok');else if(v.includes(i))b.classList.add('bad')})}}
@@ -224,7 +244,7 @@ function check(){const q=CQ;let ok=true,m='';
 
 
 window.APPMODE='play';
-let CODE='',S=null,PL={},QS=[],ORD=[],qi=0,LG=[],NOTE=[],ENDED=false,LOCK=false,M3=[],OKN=0,BADN=0,TI=null,TK=null;
+let CODE='',S=null,PL={},QS=[],QR=[],NOLOG=false,OPENING=false,RETRY_CHEST=false,ORD=[],qi=0,LG=[],NOTE=[],ENDED=false,LOCK=false,M3=[],OKN=0,BADN=0,TI=null,TK=null;
 const AV=['🦊','🐼','🦁','🐯','🐸','🐵','🐰','🐻','🐨','🦄','🐙','🐧','🐶','🐱','🐲','🦉'];let AVSEL='🦊';
 const OUT=[['gold','💰',25],['empty','🫥',15],['double','✨',12],['half','💸',13],['s50','🥷',12],['s75','🦹',8],['swap','🔄',15]];
 const LS=(k,v)=>{try{return v===undefined?JSON.parse(localStorage.getItem(k)):localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
@@ -236,7 +256,7 @@ async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)retu
   $('#avs').innerHTML=AV.map(a=>`<button class="avb${a==AVSEL?' on':''}" onclick="AVSEL='${a}';document.querySelectorAll('.avb').forEach(x=>x.classList.toggle('on',x.textContent==AVSEL))">${a}</button>`).join('');$('#jN').focus()}catch(e){er('Lỗi: '+e.message)}}
 async function join(){const nm=$('#jN').value.trim();if(!nm)return er('Nhập tên của em.');er('Đang vào…');
  try{await syncT();await fb(G(`players/${CODE}/${ME}`),'PUT',{name:nm,av:AVSEL,gold:100,ok:0,bad:0});LS('goldgame',{code:CODE,rt:RT,id:ME});await enter()}catch(e){er('Lỗi: '+e.message)}}
-async function enter(){const q=await fb(G('quiz/'+CODE));await preImgs(q);CUR=JSON.parse(q||'[]');QS=CUR.map(norm).filter(Boolean);ORD=shuffle(QS.keys());LG=(await fb(G(`logs/${CODE}/${ME}`)))||[];
+async function enter(){const q=await fb(G('quiz/'+CODE));await preImgs(q);CUR=JSON.parse(q||'[]');QS=[];QR=[];CUR.forEach(x=>{const n=norm(x);if(n){QS.push(n);QR.push(x)}});ORD=shuffle(QS.keys());LG=(await fb(G(`logs/${CODE}/${ME}`)))||[];
  const me=await fb(G(`players/${CODE}/${ME}`));OKN=me.ok|0;BADN=me.bad|0;window.SYNC=sync;clearInterval(TK);TK=setInterval(tick,2000);clearInterval(TI);TI=setInterval(clock,1000);tick()}
 async function resume(){const v=LS('goldgame');if(!v)return false;try{RT=v.rt;ME=v.id;CODE=v.code;await fbRefresh();await syncT();S=await fb(G('sessions/'+CODE));if(!S||S.status=='ended'||!(await fb(G(`players/${CODE}/${ME}`))))return false;await enter();return true}catch(e){return false}}
 function toast(e){const t=$('#toast'),m={s50:'lấy 50% vàng của bạn',s75:'lấy 75% vàng của bạn',swap:'đổi vàng với bạn'}[e.k]||'';t.innerHTML=`${e.av||''} <b>${esc(e.from)}</b> đã ${m}!<br>💰 ${e.b} → ${e.a}`;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',7000)}
@@ -251,13 +271,20 @@ function view(){if(ENDED||!S)return;const me=PL[ME]||{gold:0},L=Object.entries(P
  let w=$('#lbw');if(!w){document.body.insertAdjacentHTML('beforeend','<div id="lbw"><div class="lbi" tabindex="0" title="Bảng xếp hạng">🏆<b></b></div><div class="lbp"></div></div>');w=$('#lbw')}
  w.style.display='';w.querySelector('b').textContent=rk+'/'+L.length;w.querySelector('.lbp').innerHTML='<b>🏆 Bảng xếp hạng</b>'+L.slice(0,8).map(row).join('')+(rk>8?'<div style="text-align:center">⋮</div>'+row(L[rk-1],rk-1):'');
  if($('#modal').style.display!='flex'&&!LOCK)ask1()}
-function sync(q,o){const i=Math.max(0,QS.indexOf(q));LG.push({i,o:!!o});o?OKN++:BADN++;fb(G(`logs/${CODE}/${ME}`),'PUT',LG).catch(()=>{});fb(G(`players/${CODE}/${ME}`),'PATCH',{ok:OKN,bad:BADN}).catch(()=>{})}
-function ask1(){if(ENDED||!S||S.status!='running'||$('#modal').style.display=='flex')return;if(qi>=ORD.length){qi=0;ORD=shuffle(ORD)}const q=QS[ORD[qi++]];showQ(q,ok=>{if(ENDED)return;if(ok)mirrors();else{close_();setTimeout(ask1,150)}})}
-function nxtQ(){clearTimeout(window.NQ);if(ENDED||LOCK)return;close_();tick();setTimeout(ask1,150)}
+function sync(q,o){if(NOLOG)return;const i=Math.max(0,QS.indexOf(q));LG.push({i,o:!!o});o?OKN++:BADN++;fb(G(`logs/${CODE}/${ME}`),'PUT',LG).catch(()=>{});fb(G(`players/${CODE}/${ME}`),'PATCH',{ok:OKN,bad:BADN}).catch(()=>{})}
+function ask1(){if(ENDED||!S||S.status!='running'||$('#modal').style.display=='flex')return;askNext()}
+function askNext(pre){if(ENDED||!S||S.status!='running')return;if(qi>=ORD.length){qi=0;ORD=shuffle(ORD)}askQ(ORD[qi++],pre,false)}
+function askQ(ix,pre,rt){const q=QS[ix];NOLOG=!!rt;showQ(q,ok=>{if(ENDED)return;
+  if(ok){if(rt){NOLOG=false;RETRY_CHEST?mirrors():askNext()}else mirrors()}
+  else retry(ix)},pre);warm()}
+function retry(ix){if(ENDED)return;QS[ix]=norm(QR[ix],true)||QS[ix];askQ(ix,'<div class="retry">🔁 Chưa đúng — làm lại câu này nhé! <small>(đáp án đã xáo trộn, làm lại không có rương)</small></div>',true)}
+function warm(){try{const q=QS[ORD[qi]];if(!q)return;const l=[q.img];if(q.oi)Object.values(q.oi).forEach(o=>o&&l.push(o.src));l.filter(Boolean).forEach(u=>{const i=new Image();i.src=rs(u)})}catch(e){}}
+function nxtQ(){clearTimeout(window.NQ);if(ENDED||LOCK)return;tick();askNext()}
 function draw3(){const p=[...OUT],r=[];while(r.length<3){let x=Math.random()*p.reduce((a,o)=>a+o[2],0),k=0;for(;k<p.length-1;k++){x-=p[k][2];if(x<0)break}r.push(p.splice(k,1)[0])}return r}
 const CHC=`<svg viewBox="0 0 100 90" width="80" height="72"><ellipse cx="50" cy="85" rx="40" ry="5" fill="#0002"/><path d="M12 42Q12 17 50 17Q88 17 88 42Z" fill="#d9772e" stroke="#ffcf1a" stroke-width="5" stroke-linejoin="round"/><rect x="10" y="42" width="80" height="38" rx="4" fill="#d9772e" stroke="#ffcf1a" stroke-width="5"/><rect x="8" y="40" width="84" height="8" fill="#ffcf1a"/><rect x="43" y="42" width="14" height="17" rx="3" fill="#ffcf1a"/><circle cx="50" cy="49" r="3" fill="#b45309"/><g fill="#c2410c"><circle cx="17" cy="55" r="2.6"/><circle cx="83" cy="55" r="2.6"/><circle cx="17" cy="72" r="2.6"/><circle cx="83" cy="72" r="2.6"/></g></svg>`;
-function mirrors(){M3=draw3();modal(`<div class="big">🎉</div><h3>Chính xác! Chọn 1 trong 3 rương</h3><div class="mirrors">${M3.map((x,i)=>`<button class="mr3" onclick="openM(${i})">${CHC}</button>`).join('')}</div>`)}
-function openM(i){let t=M3[i];const oth=Object.entries(PL).filter(([id])=>id!=ME).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
+function mirrors(){M3=draw3();OPENING=false;modal(`<div class="big pop">🎉</div><h3>Chính xác! Chọn 1 trong 3 rương</h3><div class="mirrors">${M3.map((x,i)=>`<button class="mr3" onclick="openM(${i})">${CHC}</button>`).join('')}</div>`)}
+function openM(i){if(OPENING||LOCK||ENDED)return;OPENING=true;document.querySelectorAll('.mr3').forEach((b,k)=>{b.disabled=true;if(k==i)b.classList.add('op')});const mm=$('.mirrors');if(mm)mm.classList.add('go2');setTimeout(()=>{OPENING=false;if(!ENDED)openM2(i)},650)}
+function openM2(i){let t=M3[i];const oth=Object.entries(PL).filter(([id])=>id!=ME).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
  if(['s50','s75','swap'].includes(t[0])){if(!oth.length)t=OUT[0];else{const ti={s50:'🥷 Lấy 50% vàng của ai?',s75:'🦹 Lấy 75% vàng của ai?',swap:'🔄 Đổi vàng với ai?'}[t[0]];return modal(`<h3>${ti}</h3>${oth.map(r=>`<button class="tg2 opt" onclick="applyOut('${t[0]}','${r.id}')">${r.av||''} ${esc(r.name)} — 💰 ${r.gold|0}</button>`).join('')}`)}}applyOut(t[0])}
 async function applyOnce(k,vid){
  const inc=(id,d)=>({[id+'/gold']:{'.sv':{increment:d}}}),g=(await fb(G(`players/${CODE}/${ME}/gold`)))|0;let d=0,msg='',vd=0,vg=0,vn='';
@@ -268,11 +295,12 @@ async function applyOnce(k,vid){
  else{if(k=='gold'){d=[100,200,500][Math.random()*3|0];msg=`💰 Em nhận được <b>+${d}</b> vàng!`}else if(k=='double'){d=Math.max(0,g);msg=`✨ Nhân đôi vàng! <b>+${d}</b> 💰`}else if(k=='half'){d=-Math.floor(Math.max(0,g)/2);msg=g<=0?'😅 Em không có vàng nên không bị trừ!':d?`💸 Ôi! Mất nửa số vàng: <b>${d}</b> 💰`:'😅 Chỉ còn 1 vàng nên không bị trừ!'}else msg='🫥 Gương rỗng… không có gì cả.';
   if(d)await fb(G('players/'+CODE),'PATCH',inc(ME,d))}
  return msg}
-async function applyOut(k,vid){if(LOCK)return;LOCK=true;modal('<div class="big">🎁</div><h3>Đang mở rương…</h3>');
+function lockBox(){document.querySelectorAll('#mbox button').forEach(b=>b.disabled=true);$('#mbox').insertAdjacentHTML('beforeend','<p class="hint wt">⏳ Đang mở rương…</p>')}
+async function applyOut(k,vid){if(LOCK)return;LOCK=true;lockBox();
  try{let msg;for(let n=0;;n++){try{msg=await applyOnce(k,vid);break}catch(e){
    /* Rules từ chối (vàng sẽ < 0 do số liệu cũ) -> đọc lại số mới và tính lại */
    if(n<3&&/Permission denied|403/i.test(e.message)){await new Promise(r=>setTimeout(r,150+Math.random()*350));continue}throw e}}
-  modal(`<div class="big">${(OUT.find(o=>o[0]==k)||[])[1]||'🎁'}</div><h3 style="font-weight:600">${msg}</h3><button onclick="nxtQ()">Câu tiếp theo ▶</button>`);clearTimeout(window.NQ);window.NQ=setTimeout(nxtQ,3500)}catch(e){modal(`<h3>⚠️ Lỗi: ${esc(e.message)}</h3><button onclick="close_()">Đóng</button>`)}LOCK=false}
+  if(ENDED){LOCK=false;return}modal(`<div class="big pop">${(OUT.find(o=>o[0]==k)||[])[1]||'🎁'}</div><h3 style="font-weight:600">${msg}</h3><button onclick="nxtQ()">Câu tiếp theo ▶</button><div class="nbar"><i></i></div>`);clearTimeout(window.NQ);window.NQ=setTimeout(nxtQ,3300)}catch(e){modal(`<h3>⚠️ Lỗi: ${esc(e.message)}</h3><button onclick="nxtQ()">Tiếp tục ▶</button>`)}LOCK=false}
 async function finish(){if(ENDED)return;ENDED=true;{const w0=$('#lbw');if(w0)w0.remove()}clearInterval(TK);clearInterval(TI);close_();LS('goldgame',null);let P=PL,L={};try{P=(await fb(G('players/'+CODE)))||PL;L=(await fb(G('logs/'+CODE)))||{}}catch(e){}
  app(`<div class="card" style="text-align:center"><div class="big">⏰</div><h2>Hết giờ! Kết thúc trò chơi</h2>${sumH(P,L,QS,ME)}<button onclick="location.reload()">Thoát</button></div>`)}
 (async()=>{land();if(await resume())return})();
