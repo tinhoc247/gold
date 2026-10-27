@@ -61,7 +61,68 @@ body{overflow:auto}.wrap{max-width:760px;margin:0 auto;padding:12px}h1{text-alig
 #toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:50;background:#7f1d1d;color:#fff;padding:12px 16px;border-radius:12px;max-width:92%;display:none;font-weight:700;text-align:center}
 .lb{display:flex;gap:6px;padding:3px 6px;border-radius:8px}.lb.me{background:rgba(249,115,22,.25);font-weight:800}.lb span:nth-child(2){flex:1}
 .fld{font-size:18px}#modal{z-index:60}.gold{font-size:30px;font-weight:800;color:#b45309}
-</style></head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
+</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style id="ap-css">
+:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--card:#fff!important;--ink:#1e293b!important;--mut:#64748b!important;--okc:#15803d!important;--badc:#dc2626!important;--line:#e2e8f0!important;--bg1:#22d3ee!important;--bg2:#a3e635!important}
+body{font-family:"Nunito","Trebuchet MS","Segoe UI",Arial,sans-serif!important}
+body:has(.ap.sea){background:linear-gradient(135deg,#22d3ee,#34d399 55%,#bef264) fixed}
+body:has(.ap.gold){background:linear-gradient(135deg,#ffd43b,#ff922b 52%,#f06595) fixed}
+body:has(.ap) .wrap{max-width:1000px}
+.ap{--a:#06b6d4;--b:#10b981;--as:#0e7490;--al:rgba(6,182,212,.14);--t:#0e7490}
+.ap.gold{--a:#ff922b;--b:#f03e3e;--as:#c2410c;--al:rgba(255,146,43,.16);--t:#c2410c}
+.agrid,.setup.ap{display:grid;gap:14px;align-items:stretch;max-width:960px;margin:0 auto}
+.agrid{grid-template-columns:minmax(0,1fr)}
+.setup.ap{grid-template-columns:minmax(0,1fr);align-content:center;min-height:100%}
+body:has(.ap.gold) .wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.ap h1{grid-column:1/-1;margin:0;text-align:center;font-size:clamp(22px,3vw,32px);font-weight:900;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.ahd{position:relative;display:flex;align-items:center;justify-content:center;max-width:960px;margin:0 auto 10px;min-height:44px}
+.rbtn{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+.ap .card{display:flex;flex-direction:column;padding:14px 18px;border-radius:22px;border-top:6px solid var(--a);box-shadow:0 12px 30px rgba(0,0,0,.15)}
+.ap .sh{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+.ap .sh h2{margin:0;flex:1;font-size:20px;font-weight:900;color:var(--ink)}
+.ap .num{display:grid;place-items:center;flex:0 0 auto;border-radius:50%;color:#fff;width:36px;height:36px;font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 3px 0 var(--as)}
+.ap .inf{width:28px;height:28px;padding:0;border-radius:50%;margin:0;font:italic 800 16px/24px Georgia,serif;background:var(--al);color:var(--t);border:2px solid var(--a);box-shadow:none}
+.ap .inf:hover{background:var(--a);color:#fff}
+.ap .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agrid .fgrid{grid-template-columns:2fr 1fr}
+.ap label{font-weight:800;font-size:14px;color:var(--ink)}
+.ap .lb{display:block;margin:0 0 4px;font-size:13px;color:var(--mut)}
+.ap input:not([type=file]):not([type=checkbox]),.ap select{display:block;width:100%;margin:0;padding:10px 12px;border:2px solid #e2e8f0;border-radius:12px;background:#f8fafc;color:var(--ink);font:800 15px/1.25 "Nunito",sans-serif;outline:0;transition:border-color .15s,box-shadow .15s,background .15s}
+.ap input:focus,.ap select:focus{border-color:var(--a);background:#fff;box-shadow:0 0 0 4px var(--al)}
+.ap .qrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 10px}
+.ap .qrow>select,.ap .qrow>input{flex:1 1 150px;min-width:0;width:auto}
+.ap .ic{font-size:22px}
+.ap button{border-radius:12px;padding:10px 16px;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 4px 0 var(--as);transition:transform .12s,filter .12s}
+.ap button:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.ap button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--as)}
+.ap button.inf:hover{transform:none;filter:none}
+.ap button.mini{padding:10px 14px;border-radius:12px;font-size:14px}
+.ap .go,.ap .cta{width:100%;margin-top:12px;font-size:19px!important;padding:14px 18px!important;border-radius:16px!important;background:linear-gradient(135deg,#fb923c,#ef4444)!important;box-shadow:0 5px 0 #b91c1c,0 12px 20px rgba(0,0,0,.16)!important}
+.ap .cta{grid-column:1/-1}
+.ap .rbtn{background:#fff;color:var(--t);box-shadow:0 4px 0 rgba(0,0,0,.14);font-size:15px}
+.fbtn{display:inline-flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:8px;flex:1 1 150px;min-width:0;max-width:100%;padding:10px 14px;border:2px dashed var(--a);border-radius:12px;background:var(--al);color:var(--t);font-weight:800;font-size:14px;cursor:pointer;transition:background .15s,color .15s}
+.fbtn i{font-style:normal;font-size:19px}.fbtn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fbtn:hover,.fbtn.has{background:var(--a);color:#fff;border-style:solid}
+.fbtn input{display:none}
+.ap label.fbtn,.ap label.tgl{display:inline-flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;color:var(--t)}
+.ap label.tgl{color:var(--ink)}
+.tgl{display:inline-flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;background:#f1f5f9;font-weight:800;font-size:14px;cursor:pointer;user-select:none}
+.tgl input{width:18px;height:18px;margin:0;accent-color:var(--a)}
+.ap .qc{display:inline-flex;align-items:center;margin:0;padding:5px 12px;border-radius:999px;background:var(--al);color:var(--t);font-weight:900;font-size:14px}.ap .qc:empty{display:none}
+.ap .hint{margin:0 0 10px;font-size:13px;font-weight:700;color:var(--mut)}.ap .hint:empty{display:none}
+.ap .err{margin:6px 0 0;font-weight:800}.ap .err:empty{display:none}
+.deco{margin-top:auto;display:flex;justify-content:center;gap:10px;padding-top:12px;font-size:34px;opacity:.9;filter:drop-shadow(0 4px 4px rgba(0,0,0,.12))}
+#infpop{max-width:360px}
+@media(max-width:820px){.ap .fgrid,.agrid .fgrid{grid-template-columns:1fr}.rbtn{position:static;transform:none;margin-left:12px}}
+</style><style>.inf{flex:0 0 auto;border-radius:50%;padding:0;text-align:center;cursor:pointer}#infpop{position:fixed;z-index:200;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:14px;padding:14px 16px;font-size:15px;line-height:1.6;box-shadow:0 12px 32px rgba(0,0,0,.45);white-space:pre-line;text-align:left}</style><script>
+const INF=t=>`<button type="button" class="inf" data-i="${String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}" aria-label="Ghi chú">i</button>`;
+document.addEventListener('click',e=>{const old=document.getElementById('infpop'),b=e.target.closest&&e.target.closest('.inf');
+ if(old){old.remove();if(b&&old._b===b)return}if(!b)return;
+ const p=document.createElement('div');p.id='infpop';p.textContent=b.dataset.i;p._b=b;document.body.appendChild(p);
+ const r=b.getBoundingClientRect(),w=Math.min(360,innerWidth-24);p.style.width=w+'px';
+ p.style.left=Math.min(Math.max(12,r.left+r.width/2-w/2),innerWidth-w-12)+'px';
+ let t=r.bottom+8;p.style.top=t+'px';const h=p.offsetHeight;if(t+h>innerHeight-8)p.style.top=Math.max(8,r.top-h-8)+'px'});
+</script><script>document.addEventListener('change',e=>{const i=e.target;if(!i||!i.matches||!i.matches('.fbtn input[type=file]'))return;const l=i.parentNode,s=l.querySelector('span'),n=i.files.length;if(!s)return;s.textContent=n?(i.hasAttribute('webkitdirectory')?n+' tệp ảnh':i.files[0].name):s.dataset.d;l.classList.toggle('has',!!n)});</script></head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
 
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CFG=window.FBCFG,ADM=window.APPMODE=='admin';let TOK=null,RT=null,ME=null,ADMPW=null,OFF=0,busy=false,DRG=-1,SK=0,CQ=null,CB=null,RCB=null,IU=null,DQ=null,H=[],ST={ok:0,bad:0},T=[{name:''}],cur=0,Q=[],CUR=[],RAW=null;const IM={},HW={on:false};
@@ -109,7 +170,7 @@ function reload(){let list=[];SK=0;CUR=[];try{const oy=$('#onlyYes').checked;
  if(RAW.json)list=RAW.json.map(x=>x.type?(CUR.push(x),norm(x)):tq([x.q||x.question,...((x.options||x.o||[]).concat(['','','','']).slice(0,4)),x.answer??x.a,x.image||x.img]));
  else list=RAW.rows.map(r=>{const js=r[8];if(typeof js=='string'&&js.trim()[0]=='{'){if(oy&&String(r[1]).trim()=='Không')return null;try{const o=parseJ(js);CUR.push(o);return norm(o)}catch(e){return null}}return tq(r)});
  list=list.filter(Boolean);if(!list.length)throw Error('Không đọc được câu hỏi hợp lệ');Q=list;cnt()}catch(err){alert('Lỗi file: '+err.message)}}
-function cnt(){const c={};Q.forEach(q=>{const t=q.ty||'single';c[t]=(c[t]||0)+1});$('#qcount').textContent='📋 '+Q.length+' câu ('+Object.entries(c).map(e=>e[1]+' '+e[0]).join(', ')+')'+(SK?', bỏ qua '+SK+' câu không hỗ trợ':'');imgInfo()}
+function cnt(){const c={};Q.forEach(q=>{const t=q.ty||'single';c[t]=(c[t]||0)+1});$('#qcount').textContent='📋 '+Q.length+' câu'+(SK?' · ⚠️ '+SK+' bỏ qua':'');$('#qcount').title=Object.entries(c).map(e=>e[1]+' '+e[0]).join(', ');imgInfo()}
 
 
 const IMG_BASE='https://cdn.jsdelivr.net/gh/tinhoc247/ic3-images@main/';
@@ -198,9 +259,9 @@ const app=h=>$('#app').innerHTML=h;
 function login(){app(`<div class="card" style="max-width:360px;margin:10vh auto;text-align:center"><h2>🔑 Đăng nhập Admin</h2><input class="fld" id="aP" type="password" placeholder="Mật khẩu"><p id="aE" style="color:var(--badc);font-weight:700;min-height:1.3em"></p><button onclick="go()" style="width:100%">Đăng nhập</button></div>`);$('#aP').onkeydown=e=>{if(e.key=='Enter')go()};$('#aP').focus()}
 function home(){homeForm();libView()}
 async function go(){ADMPW=$('#aP').value;$('#aE').textContent='';try{await fbAuth();await syncT();home()}catch(e){$('#aE').textContent='Không đăng nhập được: '+e.message}}
-function homeForm(){app(`<h1>💰 Admin – Đổi Vàng</h1><div class="card"><b>1. Câu hỏi</b> <span id="qcount" class="hint"></span><div class="row" style="background:rgba(14,165,233,.12);padding:6px 8px;border-radius:10px"><label>📚 Thư viện <select id="libSel" onchange="libPick()" style="max-width:100%"><option value="">— Nạp file mới —</option></select></label><button class="alt mini" onclick="libView()">📚 Mở thư viện</button></div><div id="libInfo" class="hint"></div><div id="fileBox"><div class="row"><input type="file" id="file" accept=".xlsx,.xls,.csv,.json"></div><div class="row"><label class="hint"><input type="checkbox" id="onlyYes" checked> Chỉ dùng câu đánh dấu “Có”</label></div><div class="row"><label>Thư mục ảnh <input type="file" id="imgdir" webkitdirectory multiple></label></div><div id="imgInfo" class="hint"></div><div class="row" id="saveRow"><label>Tên bộ <input id="libName" placeholder="Tên bộ câu hỏi" style="width:190px"></label><label class="hint"><input type="checkbox" id="libAuto" checked> Tự lưu vào thư viện khi tạo game</label><button class="alt" onclick="libSaveBtn()">💾 Lưu vào thư viện</button></div></div><div class="hint">Excel: A câu hỏi, B–E đáp án A–D, F đáp án đúng, G link hình; hoặc ngân hàng Spark (cột “Dữ liệu JSON”) / file JSON — giống mini-game cũ.</div>
- <b style="display:block;margin-top:10px">2. Thiết lập</b><div class="row"><label>Tên game <input id="sT" value="Đổi vàng ${new Date().toLocaleDateString('vi-VN')}"></label><label>Thời gian (phút) <input id="sD" type="number" min="1" value="15" style="width:80px"></label></div><p id="sE" class="err"></p><button onclick="mk()">Tạo mã game</button></div>
- <div class="card" style="margin-top:8px"><b>Mở lại phòng cũ</b><div class="row"><input id="oC" placeholder="Mã" maxlength="5" style="width:90px;text-transform:uppercase"><button class="alt" onclick="ctl($('#oC').value.trim().toUpperCase())">Mở</button></div><div class="row"><button class="alt cta" style="width:100%" onclick="repList()">📊 Xem báo cáo các lượt chơi</button></div></div>`);imgDirInit();if(Q.length)cnt();imgInfo();libFill();
+function homeForm(){app(`<div class="ap gold"><div class="ahd"><h1>💰 Admin – Đổi Vàng</h1><button class="rbtn" onclick="repList()" title="Xem báo cáo các lượt chơi">📊 Báo cáo</button></div><div class="agrid"><div class="card"><div class="sh"><span class="num">1</span><h2>Câu hỏi</h2><span id="qcount" class="qc"></span>${INF(`Excel: cột A câu hỏi, B–E đáp án A–D, F đáp án đúng, G link hình.
+Hoặc ngân hàng Spark (cột “Dữ liệu JSON”) / file JSON.
+Ảnh: mặc định lấy từ repo chung tinhoc247/ic3-images (đường dẫn image/xxx.png). Có thể chọn thư mục ảnh trên máy để dùng thay thế.`)}</div><div class="qrow"><span class="ic">📚</span><select id="libSel" onchange="libPick()"><option value="">— Nạp file mới —</option></select><button class="mini" onclick="libView()">📚 Thư viện</button></div><div id="libInfo" class="hint"></div><div id="fileBox"><div class="qrow"><label class="fbtn"><i>📄</i><span data-d="Chọn file Excel / JSON">Chọn file Excel / JSON</span><input type="file" id="file" accept=".xlsx,.xls,.csv,.json"></label><label class="fbtn"><i>🖼️</i><span data-d="Thư mục ảnh">Thư mục ảnh</span><input type="file" id="imgdir" webkitdirectory multiple></label></div><div class="qrow"><label class="tgl"><input type="checkbox" id="onlyYes" checked><span>✅ Chỉ câu đánh dấu “Có”</span></label><label class="tgl"><input type="checkbox" id="libAuto" checked><span>💾 Tự lưu khi tạo game</span></label></div><div id="imgInfo" class="hint"></div><div class="qrow" id="saveRow" style="margin-bottom:0"><input id="libName" placeholder="🏷️ Tên bộ câu hỏi"><button onclick="libSaveBtn()">💾 Lưu vào thư viện</button></div></div></div><div class="card"><div class="sh"><span class="num">2</span><h2>Thiết lập</h2>${INF('Thời gian được tính từ lúc bấm ▶ Bắt đầu trong phòng chờ.\nMã game gồm 5 ký tự, gửi cho học sinh để vào chơi.')}</div><div class="fgrid"><label><span class="lb">🎮 Tên game</span><input id="sT" value="Đổi vàng ${new Date().toLocaleDateString('vi-VN')}"></label><label><span class="lb">⏱️ Thời gian (phút)</span><input id="sD" type="number" min="1" value="15"></label></div><p id="sE" class="err"></p><button class="go" onclick="mk()">🚀 Tạo mã game</button></div></div></div>`);imgDirInit();if(Q.length)cnt();imgInfo();libFill();
  $('#onlyYes').onchange=()=>RAW&&reload();$('#file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{CURLIB=null;if($('#libSel'))$('#libSel').value='';libPick(true);if($('#libName'))$('#libName').value=f.name.replace(/\.[^.]+$/,'');if(/\.json$/i.test(f.name)){const j=JSON.parse(await f.text());RAW={json:Array.isArray(j)?j:j.questions||[]}}else{const wb=XLSX.read(await f.arrayBuffer());RAW={rows:XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1})}}reload()}catch(err){alert('Lỗi file: '+err.message)}}}
 async function mk(){const er=m=>$('#sE').textContent=m;
  if(CURLIB){er('Đang tạo…');try{return await mkFromLib(CURLIB)}catch(e){return er('⚠️ '+e.message)}}
@@ -303,8 +364,11 @@ async function libDup(id){const l=LIB.find(x=>x.id==id);if(!l)return;const nt=$(
   qs=qs.split('lib:'+id+':').join('lib:'+nid+':');await fb(LB('libq/'+nid),'PUT',qs);
   const m={...l};delete m.id;m.name=(l.name+' (bản sao)').slice(0,80);m.plays=0;m.created=m.edited=Date.now();await fb(LB('lib/'+nid),'PUT',m);
   LIB=await libList();libRender();if(nt)nt.textContent='✅ Đã nhân bản.'}catch(e){if(nt)nt.textContent='⚠️ '+e.message}}
-async function libDel(id){const l=LIB.find(x=>x.id==id);if(!confirm('Xoá bộ “'+(l?l.name:id)+'” khỏi thư viện cùng toàn bộ ảnh đã lưu?\nCác lượt chơi cũ dùng bộ này sẽ mất hình.\nKhông thể khôi phục.'))return;
- try{for(const p of['lib','libq','libimg'])await fb(LB(p+'/'+id),'DELETE');if(CURLIB==id)CURLIB=null}catch(e){return alert('Không xoá được: '+e.message)}LIB=await libList();libRender();if($('#libSel'))libFill()}
+async function fbq(p,id){if(!TOK)await fbAuth();const r=await fetch(CFG.databaseURL.replace(/\/$/,'')+'/'+p+'.json?auth='+TOK+'&orderBy='+encodeURIComponent('"lib"')+'&equalTo='+encodeURIComponent('"'+id+'"'));if(!r.ok)throw Error('q'+r.status);return r.json()}
+async function libDel(id){const l=LIB.find(x=>x.id==id);let codes=[];
+ try{let S;try{S=await fbq(G('sessions'),id)}catch(e){S=await fb(G('sessions'))}S=S||{};codes=Object.keys(S).filter(c=>S[c]&&S[c].lib==id)}catch(e){return alert('Không đọc được danh sách lượt chơi: '+e.message)}
+ if(!confirm('Xoá bộ “'+(l?l.name:id)+'” khỏi Firebase?\nSẽ xoá sạch: câu hỏi, toàn bộ ảnh đã lưu'+(codes.length?', và '+codes.length+' lượt chơi tạo từ bộ này ('+codes.slice(0,8).join(', ')+(codes.length>8?'…':'')+') cùng người chơi, kết quả, nhật ký':'')+'.\nKhông thể khôi phục.'))return;
+ try{for(const c of codes)for(const p of['sessions','quiz','players','logs'])await fb(G(p+'/'+c),'DELETE');for(const p of['libimg','libq','lib'])await fb(LB(p+'/'+id),'DELETE');if(CURLIB==id)CURLIB=null}catch(e){return alert('Không xoá được: '+e.message)}LIB=await libList();libRender();if($('#libSel'))libFill()}
 const libPlay=id=>fb(LB('lib/'+id),'PATCH',{plays:{'.sv':{increment:1}}}).catch(()=>{});
 
 function libLeft(id){CURLIB=id;libOvClose();homeForm()}
