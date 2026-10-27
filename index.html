@@ -259,14 +259,19 @@ const CHC=`<svg viewBox="0 0 100 90" width="80" height="72"><ellipse cx="50" cy=
 function mirrors(){M3=draw3();modal(`<div class="big">🎉</div><h3>Chính xác! Chọn 1 trong 3 rương</h3><div class="mirrors">${M3.map((x,i)=>`<button class="mr3" onclick="openM(${i})">${CHC}</button>`).join('')}</div>`)}
 function openM(i){let t=M3[i];const oth=Object.entries(PL).filter(([id])=>id!=ME).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
  if(['s50','s75','swap'].includes(t[0])){if(!oth.length)t=OUT[0];else{const ti={s50:'🥷 Lấy 50% vàng của ai?',s75:'🦹 Lấy 75% vàng của ai?',swap:'🔄 Đổi vàng với ai?'}[t[0]];return modal(`<h3>${ti}</h3>${oth.map(r=>`<button class="tg2 opt" onclick="applyOut('${t[0]}','${r.id}')">${r.av||''} ${esc(r.name)} — 💰 ${r.gold|0}</button>`).join('')}`)}}applyOut(t[0])}
+async function applyOnce(k,vid){
+ const inc=(id,d)=>({[id+'/gold']:{'.sv':{increment:d}}}),g=(await fb(G(`players/${CODE}/${ME}/gold`)))|0;let d=0,msg='',vd=0,vg=0,vn='';
+ if(vid){const vp=await fb(G(`players/${CODE}/${vid}`));if(!vp)throw Error('Người chơi này đã rời phòng');vg=vp.gold|0;vn=vp.name||'';
+  if(k=='swap'){d=vg-g;vd=g-vg;msg=`🔄 Em đã đổi vàng với <b>${esc(vn)}</b>: ${g} → ${vg}`}else{const p=k=='s50'?.5:.75,x=Math.max(0,Math.floor(vg*p));d=x;vd=-x;msg=x>0?`${k=='s50'?'🥷':'🦹'} Em lấy ${p*100}% vàng của <b>${esc(vn)}</b>: +${x} 💰`:`😅 <b>${esc(vn)}</b> không có vàng để lấy!`}
+  if(d||vd){await fb(G('players/'+CODE),'PATCH',{...inc(ME,d),...inc(vid,vd)});
+   await fb(G(`events/${CODE}/${vid}`),'POST',{from:(PL[ME]||{}).name||'?',av:AVSEL,k,b:vg,a:vg+vd,t:now()})}}
+ else{if(k=='gold'){d=[100,200,500][Math.random()*3|0];msg=`💰 Em nhận được <b>+${d}</b> vàng!`}else if(k=='double'){d=Math.max(0,g);msg=`✨ Nhân đôi vàng! <b>+${d}</b> 💰`}else if(k=='half'){d=-Math.floor(Math.max(0,g)/2);msg=g<=0?'😅 Em không có vàng nên không bị trừ!':d?`💸 Ôi! Mất nửa số vàng: <b>${d}</b> 💰`:'😅 Chỉ còn 1 vàng nên không bị trừ!'}else msg='🫥 Gương rỗng… không có gì cả.';
+  if(d)await fb(G('players/'+CODE),'PATCH',inc(ME,d))}
+ return msg}
 async function applyOut(k,vid){if(LOCK)return;LOCK=true;modal('<div class="big">🎁</div><h3>Đang mở rương…</h3>');
- try{const g=(await fb(G(`players/${CODE}/${ME}/gold`)))|0,inc=(id,d)=>({[id+'/gold']:{'.sv':{increment:d}}});let d=0,msg='',vd=0,vg=0,vn='';
-  if(vid){vg=(await fb(G(`players/${CODE}/${vid}/gold`)))|0;vn=(PL[vid]||{}).name||'';
-   if(k=='swap'){d=vg-g;vd=g-vg;msg=`🔄 Em đã đổi vàng với <b>${esc(vn)}</b>: ${g} → ${vg}`}else{const p=k=='s50'?.5:.75,x=Math.floor(vg*p);d=x;vd=-x;msg=`${k=='s50'?'🥷':'🦹'} Em lấy ${p*100}% vàng của <b>${esc(vn)}</b>: +${x} 💰`}
-   await fb(G('players/'+CODE),'PATCH',{...inc(ME,d),...inc(vid,vd)});
-   await fb(G(`events/${CODE}/${vid}`),'POST',{from:(PL[ME]||{}).name||'?',av:AVSEL,k,b:vg,a:vg+vd,t:now()})}
-  else{if(k=='gold'){d=[50,100,150][Math.random()*3|0];msg=`💰 Em nhận được <b>+${d}</b> vàng!`}else if(k=='double'){d=g;msg=`✨ Nhân đôi vàng! <b>+${d}</b> 💰`}else if(k=='half'){d=-Math.floor(g/2);msg=`💸 Ôi! Mất nửa số vàng: <b>${d}</b> 💰`}else msg='🫥 Gương rỗng… không có gì cả.';
-   if(d)await fb(G('players/'+CODE),'PATCH',inc(ME,d))}
+ try{let msg;for(let n=0;;n++){try{msg=await applyOnce(k,vid);break}catch(e){
+   /* Rules từ chối (vàng sẽ < 0 do số liệu cũ) -> đọc lại số mới và tính lại */
+   if(n<3&&/Permission denied|403/i.test(e.message)){await new Promise(r=>setTimeout(r,150+Math.random()*350));continue}throw e}}
   modal(`<div class="big">${(OUT.find(o=>o[0]==k)||[])[1]||'🎁'}</div><h3 style="font-weight:600">${msg}</h3><button onclick="nxtQ()">Câu tiếp theo ▶</button>`);clearTimeout(window.NQ);window.NQ=setTimeout(nxtQ,3500)}catch(e){modal(`<h3>⚠️ Lỗi: ${esc(e.message)}</h3><button onclick="close_()">Đóng</button>`)}LOCK=false}
 async function finish(){if(ENDED)return;ENDED=true;{const w0=$('#lbw');if(w0)w0.remove()}clearInterval(TK);clearInterval(TI);close_();LS('goldgame',null);let P=PL,L={};try{P=(await fb(G('players/'+CODE)))||PL;L=(await fb(G('logs/'+CODE)))||{}}catch(e){}
  app(`<div class="card" style="text-align:center"><div class="big">⏰</div><h2>Hết giờ! Kết thúc trò chơi</h2>${sumH(P,L,QS,ME)}<button onclick="location.reload()">Thoát</button></div>`)}
