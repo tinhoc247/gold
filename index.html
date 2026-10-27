@@ -113,8 +113,11 @@ function norm(x){const im=[x.image,x.preImage].find(s=>s)||'',b={q:x.question,im
 
 
 function nm(s){let f=String(s).split(/[\\/]/).pop();try{f=decodeURIComponent(f)}catch(e){}return f.toLowerCase()}
-function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;const f=nm(s);return IM[f]||IM['~'+f.replace(/\.[^.]+$/,'')]||(HW.base?HW.base.replace(/\/?$/,'/')+s:s)}
+function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;if(/^lib:/.test(s))return IM['~'+s]||'data:image/gif;base64,R0lGODlhAQABAAAAACw=';const f=nm(s);return IM[f]||IM['~'+f.replace(/\.[^.]+$/,'')]||(HW.base?HW.base.replace(/\/?$/,'/')+s:s)}
 function imgH(s,c){return s?`<img class="${c||'qimg'}" src="${esc(rs(s))}" data-s="${esc(s)}" alt="" onerror="imgErr(this)" onclick="this.classList.toggle('zoom')">`:''}
+async function preImgs(s){const r=[...new Set(String(s||'').match(/lib:[A-Za-z0-9]+:i\d+/g)||[])].filter(k=>!IM['~'+k]);
+ for(let i=0;i<r.length;i+=6)await Promise.all(r.slice(i,i+6).map(async k=>{const[,id,key]=k.split(':');try{const v=await fb(G('libimg/'+id+'/'+key));if(typeof v=='string'&&v)IM['~'+k]=v}catch(e){}}))}
+async function qLoad(c){const r=(await fb(G('quiz/'+c)))||'[]';await preImgs(r);return JSON.parse(r).map(norm).filter(Boolean)}
 function imgErr(e){const x=document.createElement('span');x.className='imgerr';x.textContent='🖼️ Không tải được hình: '+(e.dataset.s||'');e.replaceWith(x)}
 function ob(q,i,p){const o=q.oi&&q.oi[i],m=o&&o.src?imgH(o.src,'oimg'):'',t=(p||'')+esc(q.o[i]);return o&&o.position=='after'?t+m:m+t}
 
@@ -200,7 +203,7 @@ async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)retu
   $('#avs').innerHTML=AV.map(a=>`<button class="avb${a==AVSEL?' on':''}" onclick="AVSEL='${a}';document.querySelectorAll('.avb').forEach(x=>x.classList.toggle('on',x.textContent==AVSEL))">${a}</button>`).join('');$('#jN').focus()}catch(e){er('Lỗi: '+e.message)}}
 async function join(){const nm=$('#jN').value.trim();if(!nm)return er('Nhập tên của em.');er('Đang vào…');
  try{await syncT();await fb(G(`players/${CODE}/${ME}`),'PUT',{name:nm,av:AVSEL,gold:100,ok:0,bad:0});LS('goldgame',{code:CODE,rt:RT,id:ME});await enter()}catch(e){er('Lỗi: '+e.message)}}
-async function enter(){const q=await fb(G('quiz/'+CODE));CUR=JSON.parse(q||'[]');QS=CUR.map(norm).filter(Boolean);ORD=shuffle(QS.keys());LG=(await fb(G(`logs/${CODE}/${ME}`)))||[];
+async function enter(){const q=await fb(G('quiz/'+CODE));await preImgs(q);CUR=JSON.parse(q||'[]');QS=CUR.map(norm).filter(Boolean);ORD=shuffle(QS.keys());LG=(await fb(G(`logs/${CODE}/${ME}`)))||[];
  const me=await fb(G(`players/${CODE}/${ME}`));OKN=me.ok|0;BADN=me.bad|0;window.SYNC=sync;clearInterval(TK);TK=setInterval(tick,2000);clearInterval(TI);TI=setInterval(clock,1000);tick()}
 async function resume(){const v=LS('goldgame');if(!v)return false;try{RT=v.rt;ME=v.id;CODE=v.code;await fbRefresh();await syncT();S=await fb(G('sessions/'+CODE));if(!S||S.status=='ended'||!(await fb(G(`players/${CODE}/${ME}`))))return false;await enter();return true}catch(e){return false}}
 function toast(e){const t=$('#toast'),m={s50:'lấy 50% vàng của bạn',s75:'lấy 75% vàng của bạn',swap:'đổi vàng với bạn'}[e.k]||'';t.innerHTML=`${e.av||''} <b>${esc(e.from)}</b> đã ${m}!<br>💰 ${e.b} → ${e.a}`;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',7000)}
