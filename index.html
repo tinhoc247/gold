@@ -108,8 +108,10 @@ function norm(x){const im=[x.image,x.preImage].find(s=>s)||'',b={q:x.question,im
  SK++;return null}
 
 
+const IMG_BASE='https://cdn.jsdelivr.net/gh/tinhoc247/ic3-images@main/';
+function repoUrl(s){s=String(s||'').trim().replace(/\\/g,'/').replace(/^\.?\//,'');if(!/^image\//i.test(s))s='image/'+s.split('/').pop();return IMG_BASE+encodeURI(s)}
 function nm(s){let f=String(s).split(/[\\/]/).pop();try{f=decodeURIComponent(f)}catch(e){}return f.toLowerCase()}
-function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;if(/^lib:/.test(s))return IM['~'+s]||'data:image/gif;base64,R0lGODlhAQABAAAAACw=';const f=nm(s);return IM[f]||IM['~'+f.replace(/\.[^.]+$/,'')]||(HW.base?HW.base.replace(/\/?$/,'/')+s:s)}
+function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;if(/^lib:/.test(s))return IM['~'+s]||'data:image/gif;base64,R0lGODlhAQABAAAAACw=';const f=nm(s);return IM[f]||IM['~'+f.replace(/\.[^.]+$/,'')]||(HW.base?HW.base.replace(/\/?$/,'/')+s:repoUrl(s))}
 function imgH(s,c){return s?`<img class="${c||'qimg'}" src="${esc(rs(s))}" data-s="${esc(s)}" alt="" onerror="imgErr(this)" onclick="this.classList.toggle('zoom')">`:''}
 async function preImgs(s){const r=[...new Set(String(s||'').match(/lib:[A-Za-z0-9]+:i\d+/g)||[])].filter(k=>!IM['~'+k]);
  for(let i=0;i<r.length;i+=6)await Promise.all(r.slice(i,i+6).map(async k=>{const[,id,key]=k.split(':');try{const v=await fb(G('libimg/'+id+'/'+key));if(typeof v=='string'&&v)IM['~'+k]=v}catch(e){}}))}

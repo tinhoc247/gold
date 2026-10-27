@@ -112,8 +112,10 @@ function reload(){let list=[];SK=0;CUR=[];try{const oy=$('#onlyYes').checked;
 function cnt(){const c={};Q.forEach(q=>{const t=q.ty||'single';c[t]=(c[t]||0)+1});$('#qcount').textContent='📋 '+Q.length+' câu ('+Object.entries(c).map(e=>e[1]+' '+e[0]).join(', ')+')'+(SK?', bỏ qua '+SK+' câu không hỗ trợ':'');imgInfo()}
 
 
+const IMG_BASE='https://cdn.jsdelivr.net/gh/tinhoc247/ic3-images@main/';
+function repoUrl(s){s=String(s||'').trim().replace(/\\/g,'/').replace(/^\.?\//,'');if(!/^image\//i.test(s))s='image/'+s.split('/').pop();return IMG_BASE+encodeURI(s)}
 function nm(s){let f=String(s).split(/[\\/]/).pop();try{f=decodeURIComponent(f)}catch(e){}return f.toLowerCase()}
-function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;if(/^lib:/.test(s))return IM['~'+s]||'data:image/gif;base64,R0lGODlhAQABAAAAACw=';const f=nm(s);return IM[f]||IM['~'+f.replace(/\.[^.]+$/,'')]||(HW.base?HW.base.replace(/\/?$/,'/')+s:s)}
+function rs(s){if(!s||/^(data:|https?:|blob:)/.test(s))return s;if(/^lib:/.test(s))return IM['~'+s]||'data:image/gif;base64,R0lGODlhAQABAAAAACw=';const f=nm(s);return IM[f]||IM['~'+f.replace(/\.[^.]+$/,'')]||(HW.base?HW.base.replace(/\/?$/,'/')+s:repoUrl(s))}
 function imgH(s,c){return s?`<img class="${c||'qimg'}" src="${esc(rs(s))}" data-s="${esc(s)}" alt="" onerror="imgErr(this)" onclick="this.classList.toggle('zoom')">`:''}
 async function preImgs(s){const r=[...new Set(String(s||'').match(/lib:[A-Za-z0-9]+:i\d+/g)||[])].filter(k=>!IM['~'+k]);
  for(let i=0;i<r.length;i+=6)await Promise.all(r.slice(i,i+6).map(async k=>{const[,id,key]=k.split(':');try{const v=await fb(G('libimg/'+id+'/'+key));if(typeof v=='string'&&v)IM['~'+k]=v}catch(e){}}))}
@@ -238,7 +240,7 @@ async function libSave(name){const ok=CUR.filter(o=>norm(o));if(!ok.length)throw
  const q=JSON.parse(JSON.stringify(ok)),id=ID(8),bySrc={},imgs=[],miss=[],cache={};
  const ref=p=>{if(!p||typeof p!='string'||/^(lib:|https?:)/.test(p))return p;if(cache[p]!==undefined)return cache[p];
   const src=/^(data|blob):/.test(p)?p:(IM[nm(p)]||IM['~'+nm(p).replace(/\.[^.]+$/,'')]);
-  if(!src){miss.push(p);return cache[p]=p}
+  if(!src)return cache[p]=repoUrl(p);
   if(!bySrc[src]){const key='i'+imgs.length;imgs.push({key,src});bySrc[src]='lib:'+id+':'+key}return cache[p]=bySrc[src]};
  q.forEach(o=>{for(const k of['image','preImage'])if(o[k])o[k]=ref(o[k]);const oi=o.optionImages;if(oi)Object.keys(oi).forEach(i=>{const v=oi[i];if(typeof v=='string')oi[i]=ref(v);else if(v&&v.src)v.src=ref(v.src)})});
  if(miss.length&&!confirm('Thiếu '+miss.length+' ảnh ('+[...new Set(miss)].slice(0,4).join(', ')+'). Câu có ảnh thiếu sẽ không hiện hình.\nVẫn lưu vào thư viện?'))throw Error('Đã huỷ — hãy chọn thư mục ảnh rồi lưu lại.');
@@ -312,7 +314,7 @@ async function libHostGo(id){const t=$('#hT').value.trim(),d=Math.max(1,+$('#hD'
 /* ===== Ảnh + Báo cáo ===== */
 function imgDirInit(){const d=$('#imgdir');if(!d)return;d.onchange=e=>{[...e.target.files].forEach(f=>{if(!/^image\//.test(f.type)&&!/\.(png|jpe?g|gif|webp|svg|bmp)$/i.test(f.name))return;const u=URL.createObjectURL(f),n=f.name.toLowerCase(),b='~'+n.replace(/\.[^.]+$/,'');IM[n]=u;IM[b]=IM[b]||u});imgInfo(true)}}
 function imgPaths(){const s=new Set();CUR.forEach(x=>{[x.image,x.preImage].forEach(v=>{if(v&&!/^data:/.test(v))s.add(v)});(x.optionImages||[]).forEach(o=>{const v=o&&(o.src||o);if(typeof v=='string'&&v&&!/^data:/.test(v))s.add(v)})});return[...s]}
-function imgInfo(alertIt){const el=$('#imgInfo');if(!el)return;const n=Object.keys(IM).filter(k=>k[0]!='~').length,P=imgPaths(),miss=P.filter(p=>/^(https?:|blob:)/.test(p)?false:!(IM[nm(p)]||IM['~'+nm(p).replace(/\.[^.]+$/,'')]));
+function imgInfo(alertIt){const el=$('#imgInfo');if(!el)return;const n=Object.keys(IM).filter(k=>k[0]!='~').length,P=imgPaths(),miss=P.filter(p=>false);
  el.innerHTML=(n?'🖼️ Đã nạp '+n+' ảnh. ':'')+(P.length?(miss.length?'<span style="color:var(--badc);font-weight:700">⚠️ Thiếu '+miss.length+'/'+P.length+' ảnh: '+miss.slice(0,6).map(esc).join(', ')+(miss.length>6?'…':'')+'</span>':'✅ Đủ '+P.length+'/'+P.length+' ảnh của câu hỏi.'):(Q.length?'Các câu hỏi hiện tại không dùng ảnh.':''));
  if(alertIt)toast_('Đã nạp '+n+' ảnh')}
 function toast_(m){const t=$('#toast');t.textContent=m;t.style.background='#166534';t.style.display='block';clearTimeout(window.TT);window.TT=setTimeout(()=>t.style.display='none',1800)}
