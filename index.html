@@ -82,10 +82,6 @@ async function fb(p,m,b,again){if(!TOK)await fbAuth();
  const r=await fetch(CFG.databaseURL.replace(/\/$/,'')+'/'+p+'.json?auth='+TOK,{method:m||'GET',headers:{'Content-Type':'application/json'},body:b===undefined?undefined:JSON.stringify(b)});
  if(r.status==401&&!again){await fbRefresh();return fb(p,m,b,1)}if(!r.ok){let m='';try{const j=await r.json();m=j&&j.error||''}catch(e){}throw Error(r.status==401||r.status==403?'Không có quyền truy cập dữ liệu ('+(m||r.status)+'). Kiểm tra Rules của Realtime Database và việc đăng nhập.':r.status==404?'Không tìm thấy Realtime Database (kiểm tra databaseURL).':'Database '+r.status+(m?': '+m:''))}return r.json()}
 
-async function fb(p,m,b,again){if(!TOK)await fbAuth();
- const r=await fetch(CFG.databaseURL.replace(/\/$/,'')+'/'+p+'.json?auth='+TOK,{method:m||'GET',headers:{'Content-Type':'application/json'},body:b===undefined?undefined:JSON.stringify(b)});
- if(r.status==401&&!again){await fbRefresh();return fb(p,m,b,1)}
- if(!r.ok)throw Error(r.status==401||r.status==403?'Không có quyền truy cập dữ liệu. Hãy cập nhật Rules của Realtime Database (xem hướng dẫn).':r.status==404?'Không tìm thấy Realtime Database (kiểm tra databaseURL).':'Database '+r.status);return r.json()}
 async function syncT(){if(!TOK)await fbAuth();const v=await fb(G('ts/'+ME),'PUT',{'.sv':'timestamp'});OFF=v-Date.now()}
 function sumH(P,LG,Qs,me){const L=Object.entries(P||{}).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold),md=['🥇','🥈','🥉'],w={};
  Object.values(LG||{}).forEach(a=>(a||[]).forEach(x=>{const r=w[x.i]=w[x.i]||{n:0,w:0};r.n++;if(!x.o)r.w++}));
