@@ -56,6 +56,20 @@ select:disabled{opacity:1;color:var(--ink);-webkit-text-fill-color:var(--ink)}
 .avs{display:inline-block;vertical-align:middle;width:1.9em;height:1.9em;border-radius:24%;box-shadow:0 2px 4px rgba(0,0,0,.25);flex:none}.lb .avs,td .avs{width:2.4em;height:2.4em}.chip .avs{width:2.2em;height:2.2em;margin-right:4px}.hint .avs{width:1.8em;height:1.8em}.opt .avs{width:2.2em;height:2.2em;margin-right:6px}.hd2 .avs{width:3.4em;height:3.4em}
 .avb .avs{width:100%;height:100%;box-shadow:none;display:block}#avs{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:6px;justify-items:center;margin:8px 0;max-height:none;overflow:visible}.ecard .avb{width:54px;height:54px;margin:0}
 .avb:disabled{opacity:.3;filter:grayscale(1);cursor:not-allowed;box-shadow:none}.avb:disabled:active{transform:none}
+
+/* Chọn nhân vật: hiện đủ toàn bộ khung, không cần cuộn */
+html,body{overflow-y:auto}
+.entry:has(.ecard.pick){min-height:100vh;min-height:100dvh;padding:8px 0}
+.ecard.pick{max-width:760px;margin-top:34px;padding:40px 14px 12px}
+.ecard.pick .ebadge{width:64px;height:64px;margin-left:-32px;top:-32px;font-size:34px}
+.ecard.pick h2{font-size:20px;margin:0}
+.ecard.pick .hint{margin:0 0 6px;font-size:13px}
+.ecard.pick input.fld{padding:8px 12px;font-size:16px;margin:4px 0}
+.ecard.pick #avs{grid-template-columns:repeat(10,1fr);gap:5px;margin:6px 0;max-height:none!important;overflow:visible!important}
+.ecard.pick .avb,.ecard.pick #avs .avb{width:100%;height:auto;aspect-ratio:1/1;margin:0;padding:2px;border-radius:12px}
+.ecard.pick #jE{margin:4px 0;min-height:1.2em;font-size:13px}
+.ecard.pick>button{padding:10px;font-size:18px}
+@media(max-width:600px){.ecard.pick{padding:38px 10px 10px}.ecard.pick #avs{grid-template-columns:repeat(8,1fr);gap:4px}}
 </style><style>.sb{width:100%;border-collapse:collapse;font-size:15px;text-align:left}.sb td,.sb th{padding:5px 6px;border-bottom:1px solid var(--line)}.bar{height:10px;border-radius:6px;background:#ef4444}.fld{display:block;width:100%;margin:4px 0}.code{font-size:34px;letter-spacing:6px;font-weight:800;color:#0369a1}</style><style>
 body{overflow:auto}.wrap{max-width:760px;margin:0 auto;padding:12px}h1{text-align:center}
 .hd{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}.hd .card{flex:1;text-align:center;font-size:18px;padding:8px}
@@ -333,7 +347,7 @@ async function drawAv(){const box=$('#avs');if(!box)return;const T=await takenAv
  box.innerHTML=AV.map(a=>`<button type="button" class="avb${a==AVSEL?' on':''}" data-a="${a}" title="${AVN[a]}${T.has(a)?' (đã có người chọn)':''}"${T.has(a)?' disabled':''} onclick="AVSEL='${a}';document.querySelectorAll('.avb').forEach(x=>x.classList.toggle('on',x.dataset.a==AVSEL))">${avH(a)}</button>`).join('')}
 async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)return er('Nhập mã game.');er('Đang kiểm tra…');
  try{const s=await fb(G('sessions/'+c));if(!s)return er('Mã không đúng.');if(s.status=='ended'||(s.status=='running'&&Date.now()>s.end+3e5))return er('🔒 Game này đã kết thúc.');CODE=c;S=s;
-  app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard"><div class="ebadge">🎮</div><h2>${esc(s.title||c)}</h2><p class="hint">Mã <b>${c}</b> · ${s.nq} câu hỏi</p><input class="fld" id="jN" placeholder="Tên của em" maxlength="30"><div style="font-weight:700;font-size:13px;margin-top:8px">Chọn nhân vật</div><div id="avs"></div><p id="jE" style="color:var(--badc);font-weight:700;min-height:1.3em"></p><button onclick="join()" style="width:100%;font-size:20px">▶ Vào phòng chờ</button></div></div>`);
+  app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard pick"><div class="ebadge">🎮</div><h2>${esc(s.title||c)}</h2><p class="hint">Mã <b>${c}</b> · ${s.nq} câu hỏi</p><input class="fld" id="jN" placeholder="Tên của em" maxlength="30"><div style="font-weight:700;font-size:13px;margin-top:8px">Chọn nhân vật</div><div id="avs"></div><p id="jE" style="color:var(--badc);font-weight:700;min-height:1.3em"></p><button onclick="join()" style="width:100%;font-size:20px">▶ Vào phòng chờ</button></div></div>`);
   await drawAv();clearInterval(window.AVT);window.AVT=setInterval(()=>{$('#avs')?drawAv():clearInterval(window.AVT)},2500);$('#jN').focus()}catch(e){er('Lỗi: '+e.message)}}
 async function join(){const nm=$('#jN').value.trim();if(!nm)return er('Nhập tên của em.');er('Đang vào…');
  try{await syncT();if((await takenAv()).has(AVSEL)){await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}const NK=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();{const P0=await fb(G('players/'+CODE))||{};if(Object.entries(P0).some(([id,v])=>id!=ME&&NK(v.name)==NK(nm)))return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}await fb(G(`players/${CODE}/${ME}`),'PUT',{name:nm,av:AVSEL,gold:100,ok:0,bad:0});{const T2=await fb(G('players/'+CODE))||{};if(Object.entries(T2).some(([id,v])=>id!=ME&&id<ME&&NK(v.name)==NK(nm))){await fb(G(`players/${CODE}/${ME}`),'DELETE');return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}if(Object.entries(T2).some(([id,v])=>id!=ME&&v.av==AVSEL&&id<ME)){await fb(G(`players/${CODE}/${ME}`),'DELETE');await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}}clearInterval(window.AVT);LS('goldgame',{code:CODE,rt:RT,id:ME});await enter()}catch(e){er('Lỗi: '+e.message)}}
