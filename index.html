@@ -137,6 +137,10 @@ body:has(.entry.sea){background:linear-gradient(135deg,#22d3ee,#34d399 50%,#bef2
 .wt{animation:ovIn .3s .45s both}.tg2:disabled{opacity:.6}
 .retry{background:#fee2e2;color:#7f1d1d;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:8px;animation:rtry .4s}.retry small{display:block;font-weight:500;font-size:13px;opacity:.85}
 @media (prefers-reduced-motion:reduce){#modal.show,#modal .box.in,.mr3,.mr3.op,.pop,.retry{animation:none!important}}
+</style><style>
+.mr3:not(:disabled):hover svg{animation:chHov .5s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes chHov{0%,100%{transform:rotate(0)}20%{transform:rotate(-9deg) translateY(-2px)}40%{transform:rotate(8deg) translateY(-2px)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){.mr3:hover svg{animation:none!important}}
 </style></head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
 
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -372,7 +376,7 @@ function askNext(pre){if(ENDED||!S||S.status!='running')return;if(qi>=ORD.length
 function askQ(ix,pre,rt){const q=QS[ix];NOLOG=!!rt;showQ(q,ok=>{if(ENDED)return;
   if(ok){if(rt){NOLOG=false;RETRY_CHEST?mirrors():askNext()}else mirrors()}
   else retry(ix)},pre);warm()}
-function retry(ix){if(ENDED)return;QS[ix]=norm(QR[ix],true)||QS[ix];askQ(ix,'<div class="retry">🔁 Chưa đúng — làm lại câu này nhé! <small>(đáp án đã xáo trộn, làm đúng vẫn được mở rương)</small></div>',true)}
+function retry(ix){if(ENDED)return;QS[ix]=norm(QR[ix],true)||QS[ix];askQ(ix,'<div class="retry">🔁 Chưa đúng — làm lại câu này nhé!</div>',true)}
 function warm(){try{const q=QS[ORD[qi]];if(!q)return;const l=[q.img];if(q.oi)Object.values(q.oi).forEach(o=>o&&l.push(o.src));l.filter(Boolean).forEach(u=>{const i=new Image();i.src=rs(u)})}catch(e){}}
 function nxtQ(){clearTimeout(window.NQ);if(ENDED||LOCK)return;tick();askNext()}
 function draw3(){const p=[...OUT],r=[];while(r.length<3){let x=Math.random()*p.reduce((a,o)=>a+o[2],0),k=0;for(;k<p.length-1;k++){x-=p[k][2];if(x<0)break}r.push(p.splice(k,1)[0])}return r}
