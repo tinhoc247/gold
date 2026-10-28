@@ -77,12 +77,17 @@ body{overflow:auto}.wrap{max-width:760px;margin:0 auto;padding:12px}h1{text-alig
 .mirrors{display:flex;gap:10px;justify-content:center;margin:12px 0}.tg2{display:block;width:100%;text-align:left;margin:5px 0;background:#e0f2fe;color:#0c4a6e;box-shadow:0 3px 0 #7dd3fc}
 #toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:50;background:#7f1d1d;color:#fff;padding:12px 16px;border-radius:12px;max-width:92%;display:none;font-weight:700;text-align:center}
 .lb{display:flex;gap:6px;padding:3px 6px;border-radius:8px}.lb.me{background:rgba(249,115,22,.25);font-weight:800}.lb span:nth-child(2){flex:1}
-.fld{font-size:18px}#modal{z-index:60}.gold{font-size:30px;font-weight:800;color:#b45309}
+.fld{font-size:18px}#modal{z-index:60;padding-top:92px}.gold{font-size:30px;font-weight:800;color:#b45309}
 </style><style>.mr3{padding:10px 12px;line-height:0;font-size:0;background:#fef3c7;border-radius:14px;box-shadow:0 4px 0 #f59e0b}.mr3:hover{transform:translateY(-3px)}
 #lbw{position:fixed;top:8px;right:8px;z-index:70}#lbw .lbi{width:46px;height:46px;border-radius:50%;background:#f97316;color:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 3px 0 #c2410c,0 4px 12px #0004;cursor:pointer;position:relative;outline:0}
 #lbw .lbi b{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:11px;background:#0f172a;color:#fff;border-radius:8px;padding:0 6px;white-space:nowrap}
 #lbw .lbp{display:none;position:absolute;right:0;top:54px;width:min(300px,86vw);background:var(--card);color:var(--ink);border-radius:14px;padding:10px;box-shadow:0 6px 20px #0006;max-height:70vh;overflow:auto;font-size:15px}
-#lbw:hover .lbp,#lbw:focus-within .lbp{display:block}.hd{padding-right:56px}</style><style id="entry-css">
+#lbw:hover .lbp,#lbw:focus-within .lbp{display:block}.hd{padding-right:56px}#hud{position:fixed;top:8px;left:8px;z-index:80;display:flex;flex-direction:column;gap:4px;max-width:calc(100vw - 76px);background:var(--card);color:var(--ink);border:3px solid #f97316;border-radius:16px;padding:6px 12px 7px;box-shadow:0 4px 0 #c2410c,0 6px 16px #0005;font-weight:800;line-height:1.15;pointer-events:none}
+#hud .hn{display:flex;align-items:center;gap:8px;font-size:clamp(16px,2.2vw,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#hud .hn .avs{width:1.7em;height:1.7em}#hud .hn span{overflow:hidden;text-overflow:ellipsis}
+#hud .hs{display:flex;align-items:center;gap:16px;font-size:clamp(22px,3.2vw,34px);white-space:nowrap}#hud .hs b{font-variant-numeric:tabular-nums}#hud #hdG{color:#b45309}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #hud #hdG{color:#fbbf24}}:root[data-theme="dark"] #hud #hdG{color:#fbbf24}
+.hsp{height:86px}@media(max-width:480px){#hud .hs{gap:10px}.hsp{height:80px}}
+</style><style id="entry-css">
 @keyframes eflt{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(6deg)}}
 @keyframes epop{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes ebob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
@@ -141,6 +146,11 @@ body:has(.entry.sea){background:linear-gradient(135deg,#22d3ee,#34d399 50%,#bef2
 .mr3:not(:disabled):hover svg{animation:chHov .5s ease-in-out infinite;transform-origin:50% 90%}
 @keyframes chHov{0%,100%{transform:rotate(0)}20%{transform:rotate(-9deg) translateY(-2px)}40%{transform:rotate(8deg) translateY(-2px)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
 @media (prefers-reduced-motion:reduce){.mr3:hover svg{animation:none!important}}
+
+.efield .fld{padding-right:64px}.vkb{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:48px;height:42px;border:0;border-radius:12px;background:#f97316;color:#fff;font-size:26px;line-height:1;cursor:pointer;box-shadow:0 3px 0 #c2410c;padding:0;display:grid;place-items:center}.vkb:active{transform:translateY(-50%) scale(.94)}.vkw{position:relative}.vkw .fld{padding-right:64px;width:100%}
+#vk{position:fixed;left:0;right:0;bottom:0;z-index:120;display:none;background:#0f172a;padding:10px 8px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px #0008;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#vk .vr{display:flex;justify-content:center;gap:6px;margin:6px auto;max-width:980px}#vk button{flex:1;min-width:0;height:clamp(54px,9vh,76px);font-size:clamp(24px,4vw,36px);font-weight:800;border:0;border-radius:12px;background:#f1f5f9;color:#0f172a;box-shadow:0 4px 0 #94a3b8;cursor:pointer;padding:0;font-family:inherit}#vk button:active{transform:translateY(3px);box-shadow:0 1px 0 #94a3b8;background:#fde68a}
+#vk .num{background:#bae6fd}#vk .fn{background:#fed7aa;flex:1.6}#vk .ok{background:#22c55e;color:#fff;box-shadow:0 4px 0 #15803d;flex:2.2}#vk .cl{background:#fca5a5;flex:1.6}#vk .sp{flex:5}#vk .on{background:#fde047}
 </style></head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
 
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -345,13 +355,13 @@ const AV=AVS;let AVSEL='fox';
 const OUT=[['gold','💰',25],['empty','🫥',15],['double','✨',12],['half','💸',13],['s50','🥷',12],['s75','🦹',8],['swap','🔄',15]];
 const LS=(k,v)=>{try{return v===undefined?JSON.parse(localStorage.getItem(k)):localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
 const app=h=>$('#app').innerHTML=h,er=m=>{const x=$('#jE');if(x)x.textContent=m};
-function land(){app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard"><div class="ebadge">🪙</div><h1 class="etitle">Đổi Vàng</h1><p class="esub">✨ Nhập mã game để bắt đầu nhé!</p><label class="efield"><span class="eic">🎟️</span><input class="fld" id="jC" placeholder="NHẬP MÃ GAME" maxlength="5" autocomplete="off" style="text-transform:uppercase"></label><p id="jE" class="eerr"></p><button class="ego" onclick="codeNext()">Tiếp tục <b>➜</b></button><a class="elogin" href="admin.html">🔑 Đăng nhập</a></div></div>`);$('#jC').onkeydown=e=>{if(e.key=='Enter')codeNext()}}
+function land(){app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard"><div class="ebadge">🪙</div><h1 class="etitle">Đổi Vàng</h1><p class="esub">✨ Nhập mã game để bắt đầu nhé!</p><label class="efield"><span class="eic">🎟️</span><input class="fld" id="jC" placeholder="NHẬP MÃ GAME" maxlength="5" autocomplete="off" style="text-transform:uppercase"><button type="button" class="vkb" title="Bàn phím ảo" aria-label="Bàn phím ảo" onclick="vk('jC')">⌨️</button></label><p id="jE" class="eerr"></p><button class="ego" onclick="codeNext()">Tiếp tục <b>➜</b></button><a class="elogin" href="admin.html">🔑 Đăng nhập</a></div></div>`);$('#jC').onkeydown=e=>{if(e.key=='Enter')codeNext()}}
 async function takenAv(){let P={};try{P=(await fb(G('players/'+CODE)))||{}}catch(e){}return new Set(Object.entries(P).filter(([id])=>id!=ME).map(([,v])=>v.av))}
 async function drawAv(){const box=$('#avs');if(!box)return;const T=await takenAv();if(T.has(AVSEL)){const f=AV.find(a=>!T.has(a));if(f)AVSEL=f}
  box.innerHTML=AV.map(a=>`<button type="button" class="avb${a==AVSEL?' on':''}" data-a="${a}" title="${AVN[a]}${T.has(a)?' (đã có người chọn)':''}"${T.has(a)?' disabled':''} onclick="AVSEL='${a}';document.querySelectorAll('.avb').forEach(x=>x.classList.toggle('on',x.dataset.a==AVSEL))">${avH(a)}</button>`).join('')}
 async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)return er('Nhập mã game.');er('Đang kiểm tra…');
  try{const s=await fb(G('sessions/'+c));if(!s)return er('Mã không đúng.');if(s.status=='ended'||(s.status=='running'&&Date.now()>s.end+3e5))return er('🔒 Game này đã kết thúc.');CODE=c;S=s;
-  app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard pick"><div class="ebadge">🎮</div><h2>${esc(s.title||c)}</h2><p class="hint">Mã <b>${c}</b> · ${s.nq} câu hỏi</p><input class="fld" id="jN" placeholder="Tên của em" maxlength="30"><div style="font-weight:700;font-size:13px;margin-top:8px">Chọn nhân vật</div><div id="avs"></div><p id="jE" style="color:var(--badc);font-weight:700;min-height:1.3em"></p><button onclick="join()" style="width:100%;font-size:20px">▶ Vào phòng chờ</button></div></div>`);
+  app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard pick"><div class="ebadge">🎮</div><h2>${esc(s.title||c)}</h2><p class="hint">Mã <b>${c}</b> · ${s.nq} câu hỏi</p><div class="vkw"><input class="fld" id="jN" placeholder="Tên của em" maxlength="30"><button type="button" class="vkb" title="Bàn phím ảo" aria-label="Bàn phím ảo" onclick="vk('jN')">⌨️</button></div><div style="font-weight:700;font-size:13px;margin-top:8px">Chọn nhân vật</div><div id="avs"></div><p id="jE" style="color:var(--badc);font-weight:700;min-height:1.3em"></p><button onclick="join()" style="width:100%;font-size:20px">▶ Vào phòng chờ</button></div></div>`);
   await drawAv();clearInterval(window.AVT);window.AVT=setInterval(()=>{$('#avs')?drawAv():clearInterval(window.AVT)},2500);$('#jN').focus()}catch(e){er('Lỗi: '+e.message)}}
 const NKN=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();const isKk=(KK,id,v)=>{const k=KK&&KK[id];return !!k&&(!v||NKN(k.name)==NKN(v.name))};
 async function join(){const nm=$('#jN').value.trim();if(!nm)return er('Nhập tên của em.');er('Đang vào…');
@@ -363,14 +373,15 @@ function toast(e){const t=$('#toast'),m={s50:'lấy 50% vàng của bạn',s75:'
 async function tick(){if(ENDED)return;try{const[s,p,ev]=await Promise.all([fb(G('sessions/'+CODE)),fb(G('players/'+CODE)),fb(G(`events/${CODE}/${ME}`))]);S=s||S;if(S&&isKk(S.kicked,ME,(p||{})[ME]))return gotKicked(S.kicked[ME]);{const KK=(S&&S.kicked)||{};PL=Object.fromEntries(Object.entries(p||{}).filter(([id,v])=>v&&v.name&&!isKk(KK,id,v)))}
  if(ev)Object.entries(ev).sort((a,b)=>a[1].t-b[1].t).forEach(([k,e])=>{NOTE.unshift(e);toast(e);fb(G(`events/${CODE}/${ME}/${k}`),'DELETE').catch(()=>{})})}catch(e){}
  if(S&&(S.status=='ended'||(S.status=='running'&&now()>=S.end)))return finish();view()}
-function gotKicked(k){if(ENDED)return;ENDED=true;NOLOG=true;window.SYNC=null;clearInterval(TK);clearInterval(TI);clearInterval(window.AVT);try{close_()}catch(e){}{const w0=$('#lbw');if(w0)w0.remove()}LS('goldgame',null);
+function gotKicked(k){if(ENDED)return;ENDED=true;NOLOG=true;window.SYNC=null;clearInterval(TK);clearInterval(TI);clearInterval(window.AVT);try{close_()}catch(e){}{document.querySelectorAll('#lbw,#hud').forEach(x=>x.remove())}LS('goldgame',null);
  app(`<div class="card" style="text-align:center"><div class="big">🚫</div><h2>Em đã bị mời ra khỏi phòng</h2><p class="hint">Em có thể đổi tên khác để vào lại.</p><button onclick="location.reload()">Thoát</button></div>`)}
-function clock(){if(ENDED||!S||S.status!='running')return;const l=S.end-now();const t=$('#tm');if(t)t.textContent=fmtT(l);if(l<=0)finish()}
+function clock(){if(ENDED||!S||S.status!='running')return;const l=S.end-now();const t=$('#hdT');if(t)t.textContent=fmtT(l);if(l<=0)finish()}
 function view(){if(ENDED||!S)return;const me=PL[ME]||{gold:0},L=Object.entries(PL).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
- if(S.status!='running'){const w0=$('#lbw');if(w0)w0.style.display='none'}if(S.status!='running')return app(`<div class="card" style="text-align:center"><div class="big">⏳</div><h2>Xin chào <span class="hd2">${avH(AVSEL)}</span> ${esc((me.name)||'')}</h2><p>Đang chờ admin bấm Bắt đầu…</p><p class="hint">${L.length} người trong phòng</p>${L.map(r=>`<span class="chip">${avH(r.av)} ${esc(r.name)}</span>`).join('')}</div>`);
+ if(S.status!='running'){document.querySelectorAll('#lbw,#hud').forEach(x=>x.style.display='none')}if(S.status!='running')return app(`<div class="card" style="text-align:center"><div class="big">⏳</div><h2>Xin chào <span class="hd2">${avH(AVSEL)}</span> ${esc((me.name)||'')}</h2><p>Đang chờ admin bấm Bắt đầu…</p><p class="hint">${L.length} người trong phòng</p>${L.map(r=>`<span class="chip">${avH(r.av)} ${esc(r.name)}</span>`).join('')}</div>`);
  const rk=L.findIndex(r=>r.id==ME)+1,md=['🥇','🥈','🥉'],row=(r,i)=>`<div class="lb${r.id==ME?' me':''}"><span>${md[i]||i+1}</span><span>${avH(r.av)} ${esc(r.name)}</span><span>💰 ${r.gold|0}</span></div>`;
- app(`<div class="hd"><div class="card">⏱ <b id="tm">${fmtT(S.end-now())}</b></div><div class="card">💰 <span class="gold">${me.gold|0}</span></div></div><div class="card" style="text-align:center"><div class="big">🧭</div><p class="hint">Câu hỏi sẽ tự xuất hiện…</p><button class="go" onclick="ask1()">🎯 Trả lời câu hỏi</button></div><div class="card" style="margin-top:8px"><b>Nhật ký</b>${NOTE.slice(0,6).map(e=>`<div class="hint">${avH(e.av)} ${esc(e.from)} ${{s50:'lấy 50% vàng của bạn',s75:'lấy 75% vàng của bạn',swap:'đổi vàng với bạn'}[e.k]} (${e.b} → ${e.a})</div>`).join('')||'<div class="hint">Chưa có ai động đến vàng của bạn 😎</div>'}</div>`);
+ app(`<div class="hsp"></div><div class="card" style="text-align:center"><button class="go" onclick="ask1()" style="margin:0">🎯 Trả lời câu hỏi</button></div><div class="card" style="margin-top:8px"><b>Nhật ký</b>${NOTE.slice(0,6).map(e=>`<div class="hint">${avH(e.av)} ${esc(e.from)} ${{s50:'lấy 50% vàng của bạn',s75:'lấy 75% vàng của bạn',swap:'đổi vàng với bạn'}[e.k]} (${e.b} → ${e.a})</div>`).join('')||'<div class="hint">Chưa có ai động đến vàng của bạn 😎</div>'}</div>`);
  let w=$('#lbw');if(!w){document.body.insertAdjacentHTML('beforeend','<div id="lbw"><div class="lbi" tabindex="0" title="Bảng xếp hạng">🏆<b></b></div><div class="lbp"></div></div>');w=$('#lbw')}
+{let h=$('#hud');if(!h){document.body.insertAdjacentHTML('beforeend','<div id="hud"><div class="hn"></div><div class="hs"><span>⏱ <b id="hdT"></b></span><span>💰 <b id="hdG"></b></span></div></div>');h=$('#hud')}h.style.display='';const nm=me.name||'',hn=h.querySelector('.hn'),av0=me.av||AVSEL,key=av0+'|'+nm;if(hn.dataset.k!=key){hn.dataset.k=key;hn.innerHTML=avH(av0)+'<span>'+esc(nm)+'</span>'}$('#hdT').textContent=fmtT(S.end-now());$('#hdG').textContent=me.gold|0}
  w.style.display='';w.querySelector('b').textContent=rk+'/'+L.length;w.querySelector('.lbp').innerHTML='<b>🏆 Bảng xếp hạng</b>'+L.slice(0,8).map(row).join('')+(rk>8?'<div style="text-align:center">⋮</div>'+row(L[rk-1],rk-1):'');
  if($('#modal').style.display!='flex'&&!LOCK)ask1()}
 function sync(q,o){if(NOLOG||ENDED)return;const i=Math.max(0,QS.indexOf(q));LG.push({i,o:!!o});o?OKN++:BADN++;fb(G(`logs/${CODE}/${ME}`),'PUT',LG).catch(()=>{});fb(G(`players/${CODE}/${ME}`),'PATCH',{ok:OKN,bad:BADN}).catch(()=>{})}
@@ -403,8 +414,24 @@ async function applyOut(k,vid){if(LOCK)return;LOCK=true;lockBox();
    /* Rules từ chối (vàng sẽ < 0 do số liệu cũ) -> đọc lại số mới và tính lại */
    if(n<3&&/Permission denied|403/i.test(e.message)){await new Promise(r=>setTimeout(r,150+Math.random()*350));continue}throw e}}
   if(ENDED){LOCK=false;return}modal(`<div class="big pop">${(OUT.find(o=>o[0]==k)||[])[1]||'🎁'}</div><h3 style="font-weight:600">${msg}</h3><button onclick="nxtQ()">Câu tiếp theo ▶</button><div class="nbar"><i></i></div>`);clearTimeout(window.NQ);window.NQ=setTimeout(nxtQ,3300)}catch(e){modal(`<h3>⚠️ Lỗi: ${esc(e.message)}</h3><button onclick="nxtQ()">Tiếp tục ▶</button>`)}LOCK=false}
-async function finish(){if(ENDED)return;ENDED=true;{const w0=$('#lbw');if(w0)w0.remove()}clearInterval(TK);clearInterval(TI);close_();LS('goldgame',null);let P=PL,L={};try{{const K0=(S&&S.kicked)||{};P=Object.fromEntries(Object.entries((await fb(G('players/'+CODE)))||PL).filter(([id,v])=>v&&v.name&&!isKk(K0,id,v)))}L=(await fb(G('logs/'+CODE)))||{}}catch(e){}
+async function finish(){if(ENDED)return;ENDED=true;{document.querySelectorAll('#lbw,#hud').forEach(x=>x.remove())}clearInterval(TK);clearInterval(TI);close_();LS('goldgame',null);let P=PL,L={};try{{const K0=(S&&S.kicked)||{};P=Object.fromEntries(Object.entries((await fb(G('players/'+CODE)))||PL).filter(([id,v])=>v&&v.name&&!isKk(K0,id,v)))}L=(await fb(G('logs/'+CODE)))||{}}catch(e){}
  app(`<div class="card" style="text-align:center"><div class="big">⏰</div><h2>Hết giờ! Kết thúc trò chơi</h2>${sumH(P,L,QS,ME)}<button onclick="location.reload()">Thoát</button></div>`)}
 (async()=>{land();if(await resume())return})();
 
+
+(function(){let T=null,sh=true,K=null;const R=['1234567890','QWERTYUIOP','ASDFGHJKL','ZXCVBNM'];
+function build(){K=document.createElement('div');K.id='vk';K.addEventListener('mousedown',e=>e.preventDefault());K.addEventListener('touchstart',e=>{},{passive:true});document.body.appendChild(K)}
+function nm(){return T&&T.id=='jN'}
+function draw(){const n=nm(),lc=c=>/[A-Z]/.test(c)&&n&&!sh?c.toLowerCase():c;
+ K.innerHTML=R.map((r,i)=>'<div class="vr">'+(i==3&&n?'<button class="fn'+(sh?' on':'')+'" data-k="SH">⇧</button>':'')+[...r].map(c=>'<button'+(i==0?' class="num"':'')+' data-k="'+lc(c)+'">'+lc(c)+'</button>').join('')+(i==3?'<button class="fn" data-k="BS">⌫</button>':'')+'</div>').join('')+
+ '<div class="vr"><button class="cl" data-k="CL">✖ Đóng</button>'+(n?'<button class="sp" data-k=" ">␣ Dấu cách</button>':'')+'<button class="ok" data-k="OK">✔ Xong</button></div>'}
+function put(v){const m=+T.getAttribute('maxlength')||99;if(T.value.length>=m)return;T.value+=v;ev()}
+function ev(){T.dispatchEvent(new Event('input',{bubbles:true}));if(nm())sh=!T.value||/ $/.test(T.value);draw()}
+function key(k){if(!T)return;if(k=='CL')return close();if(k=='SH'){sh=!sh;return draw()}if(k=='BS'){T.value=T.value.slice(0,-1);return ev()}
+ if(k=='OK'){const id=T.id;close();return id=='jC'?window.codeNext&&codeNext():window.join&&join()}put(k)}
+function close(){if(K)K.style.display='none';document.body.style.paddingBottom='';if(T)T.removeAttribute('inputmode');T=null}
+window.vk=function(id){const el=document.getElementById(id);if(!el)return;if(!K)build();if(T==el)return close();T=el;sh=nm()?!el.value:true;el.setAttribute('inputmode','none');el.blur();draw();K.style.display='block';
+ K.onclick=e=>{const b=e.target.closest('button');if(b)key(b.dataset.k)};
+ document.body.style.paddingBottom=K.offsetHeight+'px';setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),50)};
+})();
 </script></body></html>
