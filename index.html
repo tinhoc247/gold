@@ -151,7 +151,42 @@ body:has(.entry.sea){background:linear-gradient(135deg,#22d3ee,#34d399 50%,#bef2
 #vk{position:fixed;left:0;right:0;bottom:0;z-index:120;display:none;background:#0f172a;padding:10px 8px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px #0008;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 #vk .vr{display:flex;justify-content:center;gap:6px;margin:6px auto;max-width:980px}#vk button{flex:1;min-width:0;height:clamp(54px,9vh,76px);font-size:clamp(24px,4vw,36px);font-weight:800;border:0;border-radius:12px;background:#f1f5f9;color:#0f172a;box-shadow:0 4px 0 #94a3b8;cursor:pointer;padding:0;font-family:inherit}#vk button:active{transform:translateY(3px);box-shadow:0 1px 0 #94a3b8;background:#fde68a}
 #vk .num{background:#bae6fd}#vk .fn{background:#fed7aa;flex:1.6}#vk .ok{background:#22c55e;color:#fff;box-shadow:0 4px 0 #15803d;flex:2.2}#vk .cl{background:#fca5a5;flex:1.6}#vk .sp{flex:5}#vk .on{background:#fde047}
-</style></head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
+</style><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><style id="fs-wide">
+#modal .box{width:98vw!important;max-width:min(1500px,98vw)!important;max-height:calc(100vh - 104px)!important;max-height:calc(100dvh - 104px)!important;padding:clamp(16px,2.2vw,34px)!important}
+#modal h3{font-size:clamp(22px,2.6vw,36px)!important;line-height:1.45!important;overflow-wrap:anywhere}
+#modal .opt,#modal .tg2,#modal .box button.cso,#modal .box button.csb{white-space:normal!important;overflow-wrap:anywhere;word-break:normal;line-height:1.4!important;height:auto!important;min-height:0;font-size:clamp(18px,2vw,27px)!important;padding:clamp(12px,1.4vw,20px) clamp(14px,1.8vw,26px)!important}
+#modal .ans,#modal .ex{font-size:clamp(18px,1.9vw,25px)!important;overflow-wrap:anywhere}
+#modal .qr{flex-wrap:wrap}#modal .qr>span{flex:1 1 280px;font-size:clamp(18px,1.9vw,25px);overflow-wrap:anywhere}
+#modal .qr select,#modal .box select{width:100%;max-width:100%;font-size:clamp(17px,1.8vw,24px)!important}
+.qimg{max-height:38vh!important}
+#fsb{position:fixed;left:8px;bottom:8px;z-index:80;width:44px;height:44px;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(15,23,42,.55);color:#fff;box-shadow:none;display:none;place-items:center}
+</style>
+<style id="fs-fit">
+#modal .box{padding:calc(clamp(10px,2vh,32px)*var(--f,1)) calc(clamp(12px,2vw,34px)*var(--f,1))!important}
+#modal h3{font-size:calc(clamp(20px,min(2.6vw,4.2vh),36px)*var(--f,1))!important;margin:calc(6px*var(--f,1)) 0!important}
+#modal .box>button{font-size:calc(clamp(16px,min(2vw,3vh),25px)*var(--f,1))!important;padding:calc(clamp(8px,1.4vh,14px)*var(--f,1)) calc(18px*var(--f,1))!important;margin-top:calc(clamp(4px,.8vh,8px)*var(--f,1))!important}
+#modal .opt,#modal .tg2,#modal .box button.cso,#modal .box button.csb{font-size:calc(clamp(16px,min(2vw,3.2vh),27px)*var(--f,1))!important;padding:calc(clamp(8px,1.5vh,20px)*var(--f,1)) calc(clamp(12px,1.8vw,26px)*var(--f,1))!important;margin:calc(clamp(3px,.7vh,7px)*var(--f,1)) 0!important}
+#modal .ans,#modal .ex{font-size:calc(clamp(16px,min(1.9vw,3vh),25px)*var(--f,1))!important;margin:calc(8px*var(--f,1)) 0!important;padding:calc(10px*var(--f,1)) calc(14px*var(--f,1))!important}
+#modal .qr>span,#modal .qr select,#modal .box select{font-size:calc(clamp(16px,min(1.9vw,3vh),24px)*var(--f,1))!important}
+#modal .hint{font-size:calc(clamp(13px,2vh,17px)*var(--f,1))!important}
+.qimg{max-height:calc(30vh*var(--f,1))!important}
+#modal h3{text-align:justify!important;text-align-last:center!important;text-justify:inter-word;hyphens:manual}
+</style>
+<style id="fs-smooth">
+@media (prefers-reduced-motion:no-preference){
+@keyframes smOv{from{opacity:0}to{opacity:1}}
+@keyframes smIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes smSw{from{opacity:.15;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes smPg{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#modal.show{animation:none!important}
+#modal.sm-ov{animation:smOv .2s ease-out!important}
+#modal #mbox.sm-in{animation:smIn .26s cubic-bezier(.2,.8,.3,1) both}
+#modal #mbox.sm-sw{animation:smSw .2s ease-out both}
+#gamev,#pv,#toast,.sm-pg{animation:smPg .3s ease-out}
+.opt,.tg2,.mr3{transition:background-color .18s,box-shadow .18s,transform .12s,opacity .18s}
+}
+</style>
+</head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
 
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CFG=window.FBCFG,ADM=window.APPMODE=='admin';let TOK=null,RT=null,ME=null,ADMPW=null,OFF=0,busy=false,DRG=-1,SK=0,CQ=null,CB=null,RCB=null,IU=null,DQ=null,H=[],ST={ok:0,bad:0},T=[{name:''}],cur=0,Q=[],CUR=[],RAW=null;const IM={},HW={on:false};
@@ -352,11 +387,12 @@ const AVN={fox:'Cáo',panda:'Gấu trúc',lion:'Sư tử',tiger:'Hổ',frog:'Ế
 function avH(id,sz){const f=AVD[id];if(!f)return id?String(id).replace(/[<>&]/g,''):'';const[bg,fn]=f;return`<svg class="avs" viewBox="0 0 64 64" role="img" aria-label="${AVN[id]||id}"${sz?` style="width:${sz};height:${sz}"`:''}><rect width="64" height="64" rx="14" fill="${bg}"/>${fn()}</svg>`}
 
 const AV=AVS;let AVSEL='fox';
-const OUT=[['gold','💰',25],['empty','🫥',15],['double','✨',12],['half','💸',13],['s50','🥷',12],['s75','🦹',8],['swap','🔄',15]];
+const OUT=[['gold','💰',28],['empty','🫥',8],['double','✨',15],['half','💸',5],['s50','🥷',15],['s75','🦹',10],['swap','🔄',19]];
+const isTop=()=>{const me=(PL[ME]||{}).gold|0,o=Object.entries(PL).filter(([id])=>id!=ME);return o.length>0&&o.every(([,v])=>(v.gold|0)<=me)};
 const LS=(k,v)=>{try{return v===undefined?JSON.parse(localStorage.getItem(k)):localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
-const app=h=>$('#app').innerHTML=h,er=m=>{const x=$('#jE');if(x)x.textContent=m};
+const app=h=>$('#app').innerHTML=h,appP=h=>{const a=$('#app');if(a._h===h&&a.firstElementChild)return;a._h=h;a.innerHTML=h},er=m=>{const x=$('#jE');if(x)x.textContent=m};
 function land(){app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard"><div class="ebadge">🪙</div><h1 class="etitle">Đổi Vàng</h1><p class="esub">✨ Nhập mã game để bắt đầu nhé!</p><label class="efield"><span class="eic">🎟️</span><input class="fld" id="jC" placeholder="NHẬP MÃ GAME" maxlength="5" autocomplete="off" style="text-transform:uppercase"><button type="button" class="vkb" title="Bàn phím ảo" aria-label="Bàn phím ảo" onclick="vk('jC')">⌨️</button></label><p id="jE" class="eerr"></p><button class="ego" onclick="codeNext()">Tiếp tục <b>➜</b></button><a class="elogin" href="admin.html">🔑 Đăng nhập</a></div></div>`);$('#jC').onkeydown=e=>{if(e.key=='Enter')codeNext()}}
-async function takenAv(){let P={};try{P=(await fb(G('players/'+CODE)))||{}}catch(e){}return new Set(Object.entries(P).filter(([id])=>id!=ME).map(([,v])=>v.av))}
+async function takenAv(){let P={};try{P=(await fb(G('players/'+CODE)))||{}}catch(e){}const O=Object.entries(P).filter(([id])=>id!=ME);return O.length>=AV.length?new Set():new Set(O.map(([,v])=>v.av))}
 async function drawAv(){const box=$('#avs');if(!box)return;const T=await takenAv();if(T.has(AVSEL)){const f=AV.find(a=>!T.has(a));if(f)AVSEL=f}
  box.innerHTML=AV.map(a=>`<button type="button" class="avb${a==AVSEL?' on':''}" data-a="${a}" title="${AVN[a]}${T.has(a)?' (đã có người chọn)':''}"${T.has(a)?' disabled':''} onclick="AVSEL='${a}';document.querySelectorAll('.avb').forEach(x=>x.classList.toggle('on',x.dataset.a==AVSEL))">${avH(a)}</button>`).join('')}
 async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)return er('Nhập mã game.');er('Đang kiểm tra…');
@@ -365,7 +401,7 @@ async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)retu
   await drawAv();clearInterval(window.AVT);window.AVT=setInterval(()=>{$('#avs')?drawAv():clearInterval(window.AVT)},2500);$('#jN').focus()}catch(e){er('Lỗi: '+e.message)}}
 const NKN=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();const isKk=(KK,id,v)=>{const k=KK&&KK[id];return !!k&&(!v||NKN(k.name)==NKN(v.name))};
 async function join(){const nm=$('#jN').value.trim();if(!nm)return er('Nhập tên của em.');er('Đang vào…');
- try{await syncT();{const s0=await fb(G('sessions/'+CODE));if(s0&&s0.kicked&&s0.kicked[ME]&&NKN(s0.kicked[ME].name)==NKN(nm))return er('🚫 Tên này đã bị loại khỏi phòng. Em hãy đổi tên khác để vào lại.')}if((await takenAv()).has(AVSEL)){await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}const NK=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();{const P0=await fb(G('players/'+CODE))||{};if(Object.entries(P0).some(([id,v])=>id!=ME&&NK(v.name)==NK(nm)))return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}await fb(G(`players/${CODE}/${ME}`),'PUT',{name:nm,av:AVSEL,gold:100,ok:0,bad:0});{const T2=await fb(G('players/'+CODE))||{};if(Object.entries(T2).some(([id,v])=>id!=ME&&id<ME&&NK(v.name)==NK(nm))){await fb(G(`players/${CODE}/${ME}`),'DELETE');return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}if(Object.entries(T2).some(([id,v])=>id!=ME&&v.av==AVSEL&&id<ME)){await fb(G(`players/${CODE}/${ME}`),'DELETE');await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}}clearInterval(window.AVT);LS('goldgame',{code:CODE,rt:RT,id:ME});await enter()}catch(e){er('Lỗi: '+e.message)}}
+ try{await syncT();{const s0=await fb(G('sessions/'+CODE));if(s0&&s0.kicked&&s0.kicked[ME]&&NKN(s0.kicked[ME].name)==NKN(nm))return er('🚫 Tên này đã bị loại khỏi phòng. Em hãy đổi tên khác để vào lại.')}if((await takenAv()).has(AVSEL)){await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}const NK=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();{const P0=await fb(G('players/'+CODE))||{};if(Object.entries(P0).some(([id,v])=>id!=ME&&NK(v.name)==NK(nm)))return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}await fb(G(`players/${CODE}/${ME}`),'PUT',{name:nm,av:AVSEL,gold:100,ok:0,bad:0});{const T2=await fb(G('players/'+CODE))||{};if(Object.entries(T2).some(([id,v])=>id!=ME&&id<ME&&NK(v.name)==NK(nm))){await fb(G(`players/${CODE}/${ME}`),'DELETE');return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}const E2=Object.entries(T2).filter(([id])=>id!=ME&&id<ME);if(E2.length<AV.length&&E2.some(([,v])=>v.av==AVSEL)){await fb(G(`players/${CODE}/${ME}`),'DELETE');await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}}clearInterval(window.AVT);LS('goldgame',{code:CODE,rt:RT,id:ME});await enter()}catch(e){er('Lỗi: '+e.message)}}
 async function enter(){const q=await fb(G('quiz/'+CODE));await preImgs(q);CUR=JSON.parse(q||'[]');QS=[];QR=[];CUR.forEach(x=>{const n=norm(x);if(n){QS.push(n);QR.push(x)}});ORD=shuffle(QS.keys());LG=(await fb(G(`logs/${CODE}/${ME}`)))||[];
  const me=await fb(G(`players/${CODE}/${ME}`));OKN=me.ok|0;BADN=me.bad|0;window.SYNC=sync;clearInterval(TK);TK=setInterval(tick,2000);clearInterval(TI);TI=setInterval(clock,1000);tick()}
 async function resume(){const v=LS('goldgame');if(!v)return false;try{RT=v.rt;ME=v.id;CODE=v.code;await fbRefresh();await syncT();S=await fb(G('sessions/'+CODE));const PR=await fb(G(`players/${CODE}/${ME}`));if(S&&isKk(S.kicked,ME,PR)){gotKicked(S.kicked[ME]);return true}if(!S||S.status=='ended'||!PR)return false;await enter();return true}catch(e){return false}}
@@ -377,9 +413,9 @@ function gotKicked(k){if(ENDED)return;ENDED=true;NOLOG=true;window.SYNC=null;cle
  app(`<div class="card" style="text-align:center"><div class="big">🚫</div><h2>Em đã bị mời ra khỏi phòng</h2><p class="hint">Em có thể đổi tên khác để vào lại.</p><button onclick="location.reload()">Thoát</button></div>`)}
 function clock(){if(ENDED||!S||S.status!='running')return;const l=S.end-now();const t=$('#hdT');if(t)t.textContent=fmtT(l);if(l<=0)finish()}
 function view(){if(ENDED||!S)return;const me=PL[ME]||{gold:0},L=Object.entries(PL).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
- if(S.status!='running'){document.querySelectorAll('#lbw,#hud').forEach(x=>x.style.display='none')}if(S.status!='running')return app(`<div class="card" style="text-align:center"><div class="big">⏳</div><h2>Xin chào <span class="hd2">${avH(AVSEL)}</span> ${esc((me.name)||'')}</h2><p>Đang chờ admin bấm Bắt đầu…</p><p class="hint">${L.length} người trong phòng</p>${L.map(r=>`<span class="chip">${avH(r.av)} ${esc(r.name)}</span>`).join('')}</div>`);
+ if(S.status!='running'){document.querySelectorAll('#lbw,#hud').forEach(x=>x.style.display='none')}if(S.status!='running')return appP(`<div class="card" style="text-align:center"><div class="big">⏳</div><h2>Xin chào <span class="hd2">${avH(AVSEL)}</span> ${esc((me.name)||'')}</h2><p>Đang chờ admin bấm Bắt đầu…</p><p class="hint">${L.length} người trong phòng</p>${L.map(r=>`<span class="chip">${avH(r.av)} ${esc(r.name)}</span>`).join('')}</div>`);
  const rk=L.findIndex(r=>r.id==ME)+1,md=['🥇','🥈','🥉'],row=(r,i)=>`<div class="lb${r.id==ME?' me':''}"><span>${md[i]||i+1}</span><span>${avH(r.av)} ${esc(r.name)}</span><span>💰 ${r.gold|0}</span></div>`;
- app(`<div class="hsp"></div><div class="card" style="text-align:center"><button class="go" onclick="ask1()" style="margin:0">🎯 Trả lời câu hỏi</button></div><div class="card" style="margin-top:8px"><b>Nhật ký</b>${NOTE.slice(0,6).map(e=>`<div class="hint">${avH(e.av)} ${esc(e.from)} ${{s50:'lấy 50% vàng của bạn',s75:'lấy 75% vàng của bạn',swap:'đổi vàng với bạn'}[e.k]} (${e.b} → ${e.a})</div>`).join('')||'<div class="hint">Chưa có ai động đến vàng của bạn 😎</div>'}</div>`);
+ appP(`<div class="hsp"></div>`);
  let w=$('#lbw');if(!w){document.body.insertAdjacentHTML('beforeend','<div id="lbw"><div class="lbi" tabindex="0" title="Bảng xếp hạng">🏆<b></b></div><div class="lbp"></div></div>');w=$('#lbw')}
 {let h=$('#hud');if(!h){document.body.insertAdjacentHTML('beforeend','<div id="hud"><div class="hn"></div><div class="hs"><span>⏱ <b id="hdT"></b></span><span>💰 <b id="hdG"></b></span></div></div>');h=$('#hud')}h.style.display='';const nm=me.name||'',hn=h.querySelector('.hn'),av0=me.av||AVSEL,key=av0+'|'+nm;if(hn.dataset.k!=key){hn.dataset.k=key;hn.innerHTML=avH(av0)+'<span>'+esc(nm)+'</span>'}$('#hdT').textContent=fmtT(S.end-now());$('#hdG').textContent=me.gold|0}
  w.style.display='';w.querySelector('b').textContent=rk+'/'+L.length;w.querySelector('.lbp').innerHTML='<b>🏆 Bảng xếp hạng</b>'+L.slice(0,8).map(row).join('')+(rk>8?'<div style="text-align:center">⋮</div>'+row(L[rk-1],rk-1):'');
@@ -393,11 +429,11 @@ function askQ(ix,pre,rt){const q=QS[ix];NOLOG=!!rt;showQ(q,ok=>{if(ENDED)return;
 function retry(ix){if(ENDED)return;QS[ix]=norm(QR[ix],true)||QS[ix];askQ(ix,'<div class="retry">🔁 Chưa đúng — làm lại câu này nhé!</div>',true)}
 function warm(){try{const q=QS[ORD[qi]];if(!q)return;const l=[q.img];if(q.oi)Object.values(q.oi).forEach(o=>o&&l.push(o.src));l.filter(Boolean).forEach(u=>{const i=new Image();i.src=rs(u)})}catch(e){}}
 function nxtQ(){clearTimeout(window.NQ);if(ENDED||LOCK)return;tick();askNext()}
-function draw3(){const p=[...OUT],r=[];while(r.length<3){let x=Math.random()*p.reduce((a,o)=>a+o[2],0),k=0;for(;k<p.length-1;k++){x-=p[k][2];if(x<0)break}r.push(p.splice(k,1)[0])}return r}
+function draw3(){const top=isTop(),p=OUT.filter(o=>!(top&&o[0]=='swap')),r=[];while(r.length<3){let x=Math.random()*p.reduce((a,o)=>a+o[2],0),k=0;for(;k<p.length-1;k++){x-=p[k][2];if(x<0)break}r.push(p.splice(k,1)[0])}return r}
 const CHC=`<svg viewBox="0 0 100 90" width="80" height="72"><ellipse cx="50" cy="85" rx="40" ry="5" fill="#0002"/><path d="M12 42Q12 17 50 17Q88 17 88 42Z" fill="#d9772e" stroke="#ffcf1a" stroke-width="5" stroke-linejoin="round"/><rect x="10" y="42" width="80" height="38" rx="4" fill="#d9772e" stroke="#ffcf1a" stroke-width="5"/><rect x="8" y="40" width="84" height="8" fill="#ffcf1a"/><rect x="43" y="42" width="14" height="17" rx="3" fill="#ffcf1a"/><circle cx="50" cy="49" r="3" fill="#b45309"/><g fill="#c2410c"><circle cx="17" cy="55" r="2.6"/><circle cx="83" cy="55" r="2.6"/><circle cx="17" cy="72" r="2.6"/><circle cx="83" cy="72" r="2.6"/></g></svg>`;
 function mirrors(){M3=draw3();OPENING=false;modal(`<div class="big pop">🎉</div><h3>Chính xác! Chọn 1 trong 3 rương</h3><div class="mirrors">${M3.map((x,i)=>`<button class="mr3" onclick="openM(${i})">${CHC}</button>`).join('')}</div>`)}
 function openM(i){if(OPENING||LOCK||ENDED)return;OPENING=true;document.querySelectorAll('.mr3').forEach((b,k)=>{b.disabled=true;if(k==i)b.classList.add('op')});const mm=$('.mirrors');if(mm)mm.classList.add('go2');setTimeout(()=>{OPENING=false;if(!ENDED)openM2(i)},650)}
-function openM2(i){let t=M3[i];const oth=Object.entries(PL).filter(([id])=>id!=ME).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
+function openM2(i){let t=M3[i];if(t[0]=='swap'&&isTop())t=OUT[0];const oth=Object.entries(PL).filter(([id])=>id!=ME).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold);
  if(['s50','s75','swap'].includes(t[0])){if(!oth.length)t=OUT[0];else{const ti={s50:'🥷 Lấy 50% vàng của ai?',s75:'🦹 Lấy 75% vàng của ai?',swap:'🔄 Đổi vàng với ai?'}[t[0]];return modal(`<h3>${ti}</h3>${oth.map(r=>`<button class="tg2 opt" onclick="applyOut('${t[0]}','${r.id}')">${avH(r.av)} ${esc(r.name)} — 💰 ${r.gold|0}</button>`).join('')}`)}}applyOut(t[0])}
 async function applyOnce(k,vid){if(ENDED)return '';
  const inc=(id,d)=>({[id+'/gold']:{'.sv':{increment:d}}}),g=(await fb(G(`players/${CODE}/${ME}/gold`)))|0;let d=0,msg='',vd=0,vg=0,vn='';
@@ -434,4 +470,119 @@ window.vk=function(id){const el=document.getElementById(id);if(!el)return;if(!K)
  K.onclick=e=>{const b=e.target.closest('button');if(b)key(b.dataset.k)};
  document.body.style.paddingBottom=K.offsetHeight+'px';setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),50)};
 })();
-</script></body></html>
+</script><script>(function(){var d=document,e=d.documentElement,rq=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;if(!rq)return;
+var isF=function(){return !!(d.fullscreenElement||d.webkitFullscreenElement)},
+b=d.createElement('button');b.id='fsb';b.type='button';b.title='Toàn màn hình';b.setAttribute('aria-label','Toàn màn hình');
+var up=function(){b.textContent=isF()?'🗗':'⛶'};up();b.style.display='grid';
+var go=function(){try{var p=rq.call(e,{navigationUI:'hide'});if(p&&p.catch)p.catch(function(){})}catch(x){}};
+b.onclick=function(ev){ev.stopPropagation();if(isF()){off=true;try{ex.call(d)}catch(x){}}else{off=false;go()}};
+d.addEventListener('fullscreenchange',up);d.addEventListener('webkitfullscreenchange',up);
+d.body.appendChild(b);
+var off=false,was=false;d.addEventListener('fullscreenchange',function(){if(isF())was=true;else if(was)off=true});d.addEventListener('webkitfullscreenchange',function(){if(isF())was=true;else if(was)off=true});
+var auto=function(ev){if(off||isF())return;go()};
+['pointerdown','click','keydown','touchend'].forEach(function(n){d.addEventListener(n,auto,true)});try{go()}catch(x){}
+})()</script>
+<script>(function(){var m=document.getElementById('mbox'),mo=document.getElementById('modal');if(!m||!mo)return;var raf;
+function fit(){m.style.setProperty('--f','1');if(getComputedStyle(mo).display==='none'||!m.querySelector('.opt,.qr,.tg2,.mirrors,.ans,.ex,.area'))return;var f=1;while(m.scrollHeight>m.clientHeight+1&&f>0.7){f=Math.round((f-0.04)*100)/100;m.style.setProperty('--f',f)}}
+function sch(){cancelAnimationFrame(raf);raf=requestAnimationFrame(fit)}
+new MutationObserver(sch).observe(m,{childList:true,subtree:true,characterData:true});
+new MutationObserver(sch).observe(mo,{attributes:true,attributeFilter:['style','class']});
+m.addEventListener('load',sch,true);window.addEventListener('resize',sch);document.addEventListener('fullscreenchange',sch);document.addEventListener('webkitfullscreenchange',sch)})()</script>
+<script id="smooth-js">(function(){
+if(typeof modal!=='function'||typeof close_!=='function')return;
+var mo=document.getElementById('modal'),mb=document.getElementById('mbox'),lc=0;if(!mo||!mb)return;
+var m1=modal;modal=function(){var was=mo.style.display==='flex'||(Date.now()-lc<150);m1.apply(this,arguments);
+ mb.classList.remove('sm-in','sm-sw');void mb.offsetWidth;mb.classList.add(was?'sm-sw':'sm-in');
+ mo.classList.remove('sm-ov');if(!was){void mo.offsetWidth;mo.classList.add('sm-ov')}};
+var c1=close_;close_=function(){lc=Date.now();return c1.apply(this,arguments)};
+var cn=window.codeNext;if(typeof cn==='function'){codeNext=async function(){var r=await cn.apply(this,arguments);var c=document.getElementById('lobc');if(c){c.classList.remove('sm-pg');void c.offsetWidth;c.classList.add('sm-pg')}return r}}
+})()</script>
+<script id="music-ui">
+let AC=null,mg=null,dm=null,NB=null,MS=null,musOn=true,nt=0,mstep=0;
+const MVOL=.3,BAR=1.8,E=BAR/8,fq=s=>261.63*2**(s/12);
+const MUS_CH=[[0,0],[-5,0],[-3,1],[-7,0],[0,0],[-5,0],[-7,0],[-5,0]];
+const MUS_ML=[
+ [[0,7,1],[1,7,1],[2,9,1],[3,7,1],[4,12,3],[7,9,1]],
+ [[0,11,1],[1,11,1],[2,12,1],[3,11,1],[4,7,3],[7,4,1]],
+ [[0,9,1],[1,9,1],[2,12,1],[3,9,1],[4,16,3],[7,12,1]],
+ [[0,12,1],[1,12,1],[2,9,1],[3,5,1],[4,9,3],[7,7,1]],
+ [[0,7,1],[1,7,1],[2,9,1],[3,7,1],[4,12,3],[7,14,1]],
+ [[0,16,1],[1,14,1],[2,11,1],[3,14,1],[4,11,3],[7,7,1]],
+ [[0,9,1],[1,12,1],[2,16,1],[3,12,1],[4,17,2],[6,16,1],[7,12,1]],
+ [[0,14,1],[1,14,1],[2,11,1],[3,14,1],[4,7,2],[6,11,1],[7,14,1]]];
+function mnote(f,t,d,type,v,a,bus,lp){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+(a||.01));g.gain.exponentialRampToValueAtTime(.0001,t+d);if(lp){const fl=AC.createBiquadFilter();fl.type='lowpass';fl.frequency.setValueAtTime(lp,t);fl.frequency.exponentialRampToValueAtTime(Math.max(200,lp/4),t+d);o.connect(fl);fl.connect(g)}else o.connect(g);g.connect(bus||mg);o.start(t);o.stop(t+d+.05)}
+function mkick(t){const o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);o.connect(g);g.connect(dm);o.start(t);o.stop(t+.23)}
+function mnoise(t,d,v,f,type){const s=AC.createBufferSource(),fl=AC.createBiquadFilter(),g=AC.createGain();s.buffer=NB;fl.type=type;fl.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);s.connect(fl);fl.connect(g);g.connect(dm);s.start(t);s.stop(t+d+.02)}
+function playBar(t){const bar=mstep++%8,c=MUS_CH[bar],r=c[0],tn=c[1]?[0,3,7]:[0,4,7];
+ for(let b=0;b<4;b++)mkick(t+b*2*E);
+ [2,6].forEach(i=>mnoise(t+i*E,.14,.4,2000,'bandpass'));
+ for(let i=0;i<8;i++)mnoise(t+i*E,i%2?.07:.03,i%2?.18:.09,8000,'highpass');
+ if(bar==7)for(let k=1;k<4;k++)mnoise(t+(6+k/2)*E,.08,.28,2500,'bandpass');
+ for(let i=0;i<8;i++)mnote(fq(r-12+(i==7?7:i%2?12:0)),t+i*E,E*.8,'sawtooth',.1,.005,mg,900);
+ for(let i=1;i<8;i+=2)tn.forEach(x=>mnote(fq(r+x),t+i*E,E*.45,'square',.013,.004));
+ MUS_ML[bar].forEach(n=>mnote(fq(n[1]),t+n[0]*E,E*n[2]*.92,'square',.04,.01))}
+function startMusic(){if(AC){if(AC.state=='suspended')AC.resume();return}
+ try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+ MS=AC.createGain();MS.gain.value=musOn?MVOL:0;const cp=AC.createDynamicsCompressor();cp.threshold.value=-20;cp.ratio.value=4;MS.connect(cp);cp.connect(AC.destination);
+ mg=AC.createGain();mg.connect(MS);dm=AC.createGain();dm.connect(MS);
+ NB=AC.createBuffer(1,AC.sampleRate*.4,AC.sampleRate);const nd=NB.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+ const dl=AC.createDelay(),fb=AC.createGain(),dg=AC.createGain();dl.delayTime.value=E*1.5;fb.gain.value=.28;dg.gain.value=.45;mg.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(dg);dg.connect(MS);
+ nt=AC.currentTime+.2;setInterval(()=>{if(AC.state=='running')while(nt<AC.currentTime+1.5){playBar(nt);nt+=BAR}else nt=AC.currentTime+.2},400)}
+function musLbl(){['mus','musb'].forEach(i=>{const b=document.getElementById(i);if(b)b.textContent=i=='mus'?'🎵 Nhạc: '+(musOn?'Bật':'Tắt'):(musOn?'🎵':'🔇')})}
+function toggleMusic(){musOn=!musOn;if(!AC)startMusic();else{if(AC.state=='suspended')AC.resume();MS.gain.value=musOn?MVOL:0}musLbl()}
+
+(function(){var d=document,b=d.createElement('button');b.id='musb';b.type='button';b.title='Bật/tắt nhạc';b.setAttribute('aria-label','Bật/tắt nhạc');
+b.style.cssText='position:fixed;left:60px;bottom:8px;z-index:80;width:44px;height:44px;padding:0;margin:0;border:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(15,23,42,.55);color:#fff;box-shadow:none;cursor:pointer;display:grid;place-items:center';
+b.onclick=function(ev){ev.stopPropagation();toggleMusic()};d.body.appendChild(b);musLbl();})();
+(function(){var d=document,h=function(){['pointerdown','keydown','touchend'].forEach(function(n){d.removeEventListener(n,h,true)});try{startMusic()}catch(e){}};
+['pointerdown','keydown','touchend'].forEach(function(n){d.addEventListener(n,h,true)})})();
+</script>
+<script id="pause-js">
+(function(){
+var d=document,e=d.documentElement,rq=e.requestFullscreen||e.webkitRequestFullscreen,ov,paused=false,sus=false,miss=0,noFs=false;
+var isF=function(){return !!(d.fullscreenElement||d.webkitFullscreenElement)};
+function playing(){try{return !!ME&&!!S&&S.status=='running'&&!ENDED}catch(x){return false}}
+function mk(){
+ ov=d.createElement('div');ov.id='pzo';
+ ov.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:rgba(15,23,42,.96);color:#fff;text-align:center;padding:24px;font-family:inherit';
+ ov.innerHTML='<div style="font-size:76px;line-height:1">⏸️</div><div style="font-size:30px;font-weight:800">Game đang tạm dừng</div><div style="font-size:17px;opacity:.85;max-width:460px;line-height:1.45">Trò chơi cần chạy ở chế độ toàn màn hình. Bấm nút bên dưới để vào toàn màn hình và chơi tiếp nhé!</div><button type="button" id="pzb" style="margin-top:6px;padding:14px 34px;border:0;border-radius:16px;font-size:22px;font-weight:800;background:#f97316;color:#fff;cursor:pointer;box-shadow:0 5px 0 #c2410c">▶ Chơi tiếp</button>';
+ d.body.appendChild(ov);
+ ov.addEventListener('click',function(ev){ev.stopPropagation();go()});
+}
+function pause(){
+ if(paused||!playing())return;
+ if(!ov)mk();
+ paused=true;ov.style.display='flex';
+ e.classList.add('pz-on');
+ try{if(typeof AC!=='undefined'&&AC&&AC.state==='running'){AC.suspend();sus=true}}catch(x){}
+ try{d.querySelectorAll('video,audio').forEach(function(m){if(!m.paused){m.pause();m._pz=1}})}catch(x){}
+}
+function resume(){
+ if(!paused)return;
+ paused=false;miss=0;if(ov)ov.style.display='none';
+ e.classList.remove('pz-on');
+ try{if(sus&&typeof AC!=='undefined'&&AC)AC.resume()}catch(x){}sus=false;
+ try{d.querySelectorAll('video,audio').forEach(function(m){if(m._pz){m._pz=0;m.play()}})}catch(x){}
+}
+function go(){
+ if(!rq||isF()){resume();return}
+ try{var p=rq.call(e,{navigationUI:'hide'});
+  if(p&&p.then)p.then(resume,function(){noFs=true;resume()});else resume()
+ }catch(x){noFs=true;resume()}
+}
+var st=d.createElement('style');st.textContent='html.pz-on *{animation-play-state:paused!important}';d.head.appendChild(st);
+d.addEventListener('visibilitychange',function(){if(d.hidden)pause()});
+window.addEventListener('pagehide',pause);
+/* Đang chơi mà không ở toàn màn hình (thu nhỏ / thoát) -> tạm dừng */
+function chk(){
+ if(!rq||noFs||paused||!playing()){miss=0;return}
+ if(isF()){miss=0;return}
+ if(++miss>=2)pause()
+}
+d.addEventListener('fullscreenchange',function(){if(!isF())chk()});
+d.addEventListener('webkitfullscreenchange',function(){if(!isF())chk()});
+setInterval(chk,700);
+['keydown','keyup','keypress'].forEach(function(n){window.addEventListener(n,function(ev){if(paused){ev.stopImmediatePropagation();ev.preventDefault()}},true)});
+})();
+</script>
+</body></html>

@@ -213,6 +213,41 @@ button.vkb{all:unset;box-sizing:border-box;position:absolute;right:8px;top:50%;t
 #vk.full button:active{transform:translateY(2px);box-shadow:none}
 #vk.full .ok{flex:2.4;box-shadow:0 2px 0 #15803d}#vk.full .fn{flex:1.4}#vk.full .cl{flex:1}#vk.full .sp{flex:3}#vk.full .hf{flex:0 0 calc(10% - 4px)}
 </style>
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><style id="fs-wide">
+#modal .box{width:98vw!important;max-width:min(1500px,98vw)!important;max-height:calc(100vh - 104px)!important;max-height:calc(100dvh - 104px)!important;padding:clamp(16px,2.2vw,34px)!important}
+#modal h3{font-size:clamp(22px,2.6vw,36px)!important;line-height:1.45!important;overflow-wrap:anywhere}
+#modal .opt,#modal .tg2,#modal .box button.cso,#modal .box button.csb{white-space:normal!important;overflow-wrap:anywhere;word-break:normal;line-height:1.4!important;height:auto!important;min-height:0;font-size:clamp(18px,2vw,27px)!important;padding:clamp(12px,1.4vw,20px) clamp(14px,1.8vw,26px)!important}
+#modal .ans,#modal .ex{font-size:clamp(18px,1.9vw,25px)!important;overflow-wrap:anywhere}
+#modal .qr{flex-wrap:wrap}#modal .qr>span{flex:1 1 280px;font-size:clamp(18px,1.9vw,25px);overflow-wrap:anywhere}
+#modal .qr select,#modal .box select{width:100%;max-width:100%;font-size:clamp(17px,1.8vw,24px)!important}
+.qimg{max-height:38vh!important}
+#fsb{position:fixed;left:8px;bottom:8px;z-index:80;width:44px;height:44px;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(15,23,42,.55);color:#fff;box-shadow:none;display:none;place-items:center}
+</style>
+<style id="fs-fit">
+#modal .box{padding:calc(clamp(10px,2vh,32px)*var(--f,1)) calc(clamp(12px,2vw,34px)*var(--f,1))!important}
+#modal h3{font-size:calc(clamp(20px,min(2.6vw,4.2vh),36px)*var(--f,1))!important;margin:calc(6px*var(--f,1)) 0!important}
+#modal .box>button{font-size:calc(clamp(16px,min(2vw,3vh),25px)*var(--f,1))!important;padding:calc(clamp(8px,1.4vh,14px)*var(--f,1)) calc(18px*var(--f,1))!important;margin-top:calc(clamp(4px,.8vh,8px)*var(--f,1))!important}
+#modal .opt,#modal .tg2,#modal .box button.cso,#modal .box button.csb{font-size:calc(clamp(16px,min(2vw,3.2vh),27px)*var(--f,1))!important;padding:calc(clamp(8px,1.5vh,20px)*var(--f,1)) calc(clamp(12px,1.8vw,26px)*var(--f,1))!important;margin:calc(clamp(3px,.7vh,7px)*var(--f,1)) 0!important}
+#modal .ans,#modal .ex{font-size:calc(clamp(16px,min(1.9vw,3vh),25px)*var(--f,1))!important;margin:calc(8px*var(--f,1)) 0!important;padding:calc(10px*var(--f,1)) calc(14px*var(--f,1))!important}
+#modal .qr>span,#modal .qr select,#modal .box select{font-size:calc(clamp(16px,min(1.9vw,3vh),24px)*var(--f,1))!important}
+#modal .hint{font-size:calc(clamp(13px,2vh,17px)*var(--f,1))!important}
+.qimg{max-height:calc(30vh*var(--f,1))!important}
+#modal h3{text-align:justify!important;text-align-last:center!important;text-justify:inter-word;hyphens:manual}
+</style>
+<style id="fs-smooth">
+@media (prefers-reduced-motion:no-preference){
+@keyframes smOv{from{opacity:0}to{opacity:1}}
+@keyframes smIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes smSw{from{opacity:.15;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes smPg{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#modal.show{animation:none!important}
+#modal.sm-ov{animation:smOv .2s ease-out!important}
+#modal #mbox.sm-in{animation:smIn .26s cubic-bezier(.2,.8,.3,1) both}
+#modal #mbox.sm-sw{animation:smSw .2s ease-out both}
+#gamev,#pv,#toast,.sm-pg{animation:smPg .3s ease-out}
+.opt,.tg2,.mr3{transition:background-color .18s,box-shadow .18s,transform .12s,opacity .18s}
+}
+</style>
 </head><body><div class="wrap" id="app"></div><div id="toast"></div><div id="modal"><div class="box" id="mbox"></div></div><script>
 
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -366,7 +401,7 @@ async function ctl(code){if(!code)return;CODE=code;clearInterval(CT);let first=t
   const run=s.status=='running',end=s.status=='ended'||(run&&now()>=s.end),R=Object.entries(P).map(([id,v])=>({id,...v})).sort((a,b)=>b.gold-a.gold),md=['🥇','🥈','🥉'];
   let body;if(end){clearInterval(CT);try{L=(await fb(G('logs/'+code)))||{};QL=QL||await qLoad(code)}catch(e){L={};QL=QL||[]}body=`<h2>Kết thúc</h2>${sumH(P,L,QL,null)}<div class="row" style="justify-content:center"><button onclick="rep('${code}')">📊 Báo cáo đầy đủ</button></div>`}
   else body=run?`<div class="row"><span class="qc">⏱ còn <b id="tm">${fmtT(s.end-now())}</b></span><span class="qc">➕ đã cộng ${s.extra|0} phút</span><button onclick="addMin()">➕ 1 phút</button><button class="alt" style="background:#ef4444" onclick="endNow()">⏹ Kết thúc</button></div><table class="sb"><tr><th>#</th><th>Người chơi</th><th>Vàng</th><th>Đúng</th></tr>${R.map((r,i)=>`<tr><td>${md[i]||i+1}</td><td>${avH(r.av)} ${esc(r.name)}</td><td>💰 ${r.gold|0}</td><td>${r.ok|0}/${(r.ok|0)+(r.bad|0)}</td></tr>`).join('')}</table>`
-   :`<div class="row"><label>Thời gian (phút) <input id="dur" type="number" min="1" value="${s.dur}" style="width:80px"></label><button onclick="startG()" style="font-size:20px">▶ Bắt đầu</button></div><p class="hint">Thời gian tính từ lúc bấm Bắt đầu.</p>${R.map(r=>`<span class="chip">${avH(r.av)} ${esc(r.name)} <b title="Bấm để loại ${esc(r.name)} khỏi phòng" style="color:#dc2626;margin-left:6px;cursor:pointer" onclick="kickAsk('${r.id}',this)">✕</b></span>`).join('')||'<i>Chưa có ai vào</i>'}`;
+   :`<div class="row"><label>Thời gian (phút) <input id="dur" type="number" min="1" value="${s.dur}" style="width:80px"></label><button onclick="startG()" style="font-size:20px">▶ Bắt đầu</button>${INF("Thời gian tính từ lúc bấm Bắt đầu.")}</div>${R.map(r=>`<span class="chip">${avH(r.av)} ${esc(r.name)} <b title="Bấm để loại ${esc(r.name)} khỏi phòng" style="color:#dc2626;margin-left:6px;cursor:pointer" onclick="kickAsk('${r.id}',this)">✕</b></span>`).join('')||'<i>Chưa có ai vào</i>'}`;
   app(`<div class="card" style="text-align:center"><div class="hint">${esc(s.title)} · ${s.nq} câu · 👥 ${R.length} người</div><div class="code">${code}</div>${body}<div class="row" style="justify-content:center"><button class="alt" onclick="clearInterval(CT);home()">← Quay lại</button><button class="alt" onclick="clearInterval(CT);rep('${code}')">📊 Báo cáo</button></div></div>`);window.CS=s};
  CT=setInterval(draw,2500);window.CDRAW=draw;draw();setInterval(()=>{const t=$('#tm');if(t&&window.CS&&CS.status=='running')t.textContent=fmtT(CS.end-now())},1000)}
 const NKN=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();const isKk=(KK,id,v)=>{const k=KK&&KK[id];return !!k&&(!v||NKN(k.name)==NKN(v.name))};
@@ -537,4 +572,31 @@ function open(id,ok){var e=document.getElementById(id);if(!e)return;if(!K)build(
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.vkb');if(b){e.preventDefault();open(b.getAttribute('data-vk'),b.getAttribute('data-ok'))}},true);
 window.vk=open;
 })();
-</script></body></html>
+</script><script>(function(){var d=document,e=d.documentElement,rq=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;if(!rq)return;
+var isF=function(){return !!(d.fullscreenElement||d.webkitFullscreenElement)},
+b=d.createElement('button');b.id='fsb';b.type='button';b.title='Toàn màn hình';b.setAttribute('aria-label','Toàn màn hình');
+var up=function(){b.textContent=isF()?'🗗':'⛶'};up();b.style.display='grid';
+var go=function(){try{var p=rq.call(e,{navigationUI:'hide'});if(p&&p.catch)p.catch(function(){})}catch(x){}};
+b.onclick=function(ev){ev.stopPropagation();if(isF()){off=true;try{ex.call(d)}catch(x){}}else{off=false;go()}};
+d.addEventListener('fullscreenchange',up);d.addEventListener('webkitfullscreenchange',up);
+d.body.appendChild(b);
+var off=false,was=false;d.addEventListener('fullscreenchange',function(){if(isF())was=true;else if(was)off=true});d.addEventListener('webkitfullscreenchange',function(){if(isF())was=true;else if(was)off=true});
+var auto=function(ev){if(off||isF())return;go()};
+['pointerdown','click','keydown','touchend'].forEach(function(n){d.addEventListener(n,auto,true)});try{go()}catch(x){}
+})()</script>
+<script>(function(){var m=document.getElementById('mbox'),mo=document.getElementById('modal');if(!m||!mo)return;var raf;
+function fit(){m.style.setProperty('--f','1');if(getComputedStyle(mo).display==='none'||!m.querySelector('.opt,.qr,.tg2,.mirrors,.ans,.ex,.area'))return;var f=1;while(m.scrollHeight>m.clientHeight+1&&f>0.7){f=Math.round((f-0.04)*100)/100;m.style.setProperty('--f',f)}}
+function sch(){cancelAnimationFrame(raf);raf=requestAnimationFrame(fit)}
+new MutationObserver(sch).observe(m,{childList:true,subtree:true,characterData:true});
+new MutationObserver(sch).observe(mo,{attributes:true,attributeFilter:['style','class']});
+m.addEventListener('load',sch,true);window.addEventListener('resize',sch);document.addEventListener('fullscreenchange',sch);document.addEventListener('webkitfullscreenchange',sch)})()</script>
+<script id="smooth-js">(function(){
+if(typeof modal!=='function'||typeof close_!=='function')return;
+var mo=document.getElementById('modal'),mb=document.getElementById('mbox'),lc=0;if(!mo||!mb)return;
+var m1=modal;modal=function(){var was=mo.style.display==='flex'||(Date.now()-lc<150);m1.apply(this,arguments);
+ mb.classList.remove('sm-in','sm-sw');void mb.offsetWidth;mb.classList.add(was?'sm-sw':'sm-in');
+ mo.classList.remove('sm-ov');if(!was){void mo.offsetWidth;mo.classList.add('sm-ov')}};
+var c1=close_;close_=function(){lc=Date.now();return c1.apply(this,arguments)};
+var cn=window.codeNext;if(typeof cn==='function'){codeNext=async function(){var r=await cn.apply(this,arguments);var c=document.getElementById('lobc');if(c){c.classList.remove('sm-pg');void c.offsetWidth;c.classList.add('sm-pg')}return r}}
+})()</script>
+</body></html>
