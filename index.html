@@ -395,8 +395,9 @@ function land(){app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="
 async function takenAv(){let P={};try{P=(await fb(G('players/'+CODE)))||{}}catch(e){}const O=Object.entries(P).filter(([id])=>id!=ME);return O.length>=AV.length?new Set():new Set(O.map(([,v])=>v.av))}
 async function drawAv(){const box=$('#avs');if(!box)return;const T=await takenAv();if(T.has(AVSEL)){const f=AV.find(a=>!T.has(a));if(f)AVSEL=f}
  box.innerHTML=AV.map(a=>`<button type="button" class="avb${a==AVSEL?' on':''}" data-a="${a}" title="${AVN[a]}${T.has(a)?' (đã có người chọn)':''}"${T.has(a)?' disabled':''} onclick="AVSEL='${a}';document.querySelectorAll('.avb').forEach(x=>x.classList.toggle('on',x.dataset.a==AVSEL))">${avH(a)}</button>`).join('')}
+function gameOf(s){return s.game||(s.ini!==undefined||s.ts!==undefined?'kingdom':'gold')}
 async function codeNext(){const c=$('#jC').value.trim().toUpperCase();if(!c)return er('Nhập mã game.');er('Đang kiểm tra…');
- try{const s=await fb(G('sessions/'+c));if(!s)return er('Mã không đúng.');if(s.status=='ended'||(s.status=='running'&&Date.now()>s.end+3e5))return er('🔒 Game này đã kết thúc.');CODE=c;S=s;
+ try{const s=await fb(G('sessions/'+c));if(!s||gameOf(s)!='gold')return er('Mã không đúng.');if(s.status=='ended'||(s.status=='running'&&Date.now()>s.end+3e5))return er('🔒 Game này đã kết thúc.');CODE=c;S=s;
   app(`<div class="entry gold"><i class="fl f1">🪙</i><i class="fl f2">💰</i><i class="fl f3">⭐</i><i class="fl f4">💎</i><i class="fl f5">🎁</i><i class="fl f6">✨</i><div class="ecard pick"><div class="ebadge">🎮</div><h2>${esc(s.title||c)}</h2><p class="hint">Mã <b>${c}</b> · ${s.nq} câu hỏi</p><div class="vkw"><input class="fld" id="jN" placeholder="Tên của em" maxlength="30"><button type="button" class="vkb" title="Bàn phím ảo" aria-label="Bàn phím ảo" onclick="vk('jN')">⌨️</button></div><div style="font-weight:700;font-size:13px;margin-top:8px">Chọn nhân vật</div><div id="avs"></div><p id="jE" style="color:var(--badc);font-weight:700;min-height:1.3em"></p><button onclick="join()" style="width:100%;font-size:20px">▶ Vào phòng chờ</button></div></div>`);
   await drawAv();clearInterval(window.AVT);window.AVT=setInterval(()=>{$('#avs')?drawAv():clearInterval(window.AVT)},2500);$('#jN').focus()}catch(e){er('Lỗi: '+e.message)}}
 const NKN=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();const isKk=(KK,id,v)=>{const k=KK&&KK[id];return !!k&&(!v||NKN(k.name)==NKN(v.name))};
@@ -404,7 +405,7 @@ async function join(){const nm=$('#jN').value.trim();if(!nm)return er('Nhập t�
  try{await syncT();{const s0=await fb(G('sessions/'+CODE));if(s0&&s0.kicked&&s0.kicked[ME]&&NKN(s0.kicked[ME].name)==NKN(nm))return er('🚫 Tên này đã bị loại khỏi phòng. Em hãy đổi tên khác để vào lại.')}if((await takenAv()).has(AVSEL)){await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}const NK=x=>String(x||'').trim().replace(/\s+/g,' ').toLowerCase();{const P0=await fb(G('players/'+CODE))||{};if(Object.entries(P0).some(([id,v])=>id!=ME&&NK(v.name)==NK(nm)))return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}await fb(G(`players/${CODE}/${ME}`),'PUT',{name:nm,av:AVSEL,gold:100,ok:0,bad:0});{const T2=await fb(G('players/'+CODE))||{};if(Object.entries(T2).some(([id,v])=>id!=ME&&id<ME&&NK(v.name)==NK(nm))){await fb(G(`players/${CODE}/${ME}`),'DELETE');return er('😅 Tên này đã có bạn dùng rồi, em nhập tên khác nhé!')}const E2=Object.entries(T2).filter(([id])=>id!=ME&&id<ME);if(E2.length<AV.length&&E2.some(([,v])=>v.av==AVSEL)){await fb(G(`players/${CODE}/${ME}`),'DELETE');await drawAv();return er('😅 Nhân vật này vừa có bạn khác chọn, em chọn con khác nhé!')}}clearInterval(window.AVT);LS('goldgame',{code:CODE,rt:RT,id:ME});await enter()}catch(e){er('Lỗi: '+e.message)}}
 async function enter(){const q=await fb(G('quiz/'+CODE));await preImgs(q);CUR=JSON.parse(q||'[]');QS=[];QR=[];CUR.forEach(x=>{const n=norm(x);if(n){QS.push(n);QR.push(x)}});ORD=shuffle(QS.keys());LG=(await fb(G(`logs/${CODE}/${ME}`)))||[];
  const me=await fb(G(`players/${CODE}/${ME}`));OKN=me.ok|0;BADN=me.bad|0;window.SYNC=sync;clearInterval(TK);TK=setInterval(tick,2000);clearInterval(TI);TI=setInterval(clock,1000);tick()}
-async function resume(){const v=LS('goldgame');if(!v)return false;try{RT=v.rt;ME=v.id;CODE=v.code;await fbRefresh();await syncT();S=await fb(G('sessions/'+CODE));const PR=await fb(G(`players/${CODE}/${ME}`));if(S&&isKk(S.kicked,ME,PR)){gotKicked(S.kicked[ME]);return true}if(!S||S.status=='ended'||!PR)return false;await enter();return true}catch(e){return false}}
+async function resume(){const v=LS('goldgame');if(!v)return false;try{RT=v.rt;ME=v.id;CODE=v.code;await fbRefresh();await syncT();S=await fb(G('sessions/'+CODE));if(S&&gameOf(S)!='gold'){LS('goldgame',null);return false}const PR=await fb(G(`players/${CODE}/${ME}`));if(S&&isKk(S.kicked,ME,PR)){gotKicked(S.kicked[ME]);return true}if(!S||S.status=='ended'||!PR)return false;await enter();return true}catch(e){return false}}
 function toast(e){const t=$('#toast'),m={s50:'lấy 50% vàng của bạn',s75:'lấy 75% vàng của bạn',swap:'đổi vàng với bạn'}[e.k]||'';t.innerHTML=`${avH(e.av)} <b>${esc(e.from)}</b> đã ${m}!<br>💰 ${e.b} → ${e.a}`;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',7000)}
 async function tick(){if(ENDED)return;try{const[s,p,ev]=await Promise.all([fb(G('sessions/'+CODE)),fb(G('players/'+CODE)),fb(G(`events/${CODE}/${ME}`))]);S=s||S;if(S&&isKk(S.kicked,ME,(p||{})[ME]))return gotKicked(S.kicked[ME]);{const KK=(S&&S.kicked)||{};PL=Object.fromEntries(Object.entries(p||{}).filter(([id,v])=>v&&v.name&&!isKk(KK,id,v)))}
  if(ev)Object.entries(ev).sort((a,b)=>a[1].t-b[1].t).forEach(([k,e])=>{NOTE.unshift(e);toast(e);fb(G(`events/${CODE}/${ME}/${k}`),'DELETE').catch(()=>{})})}catch(e){}
@@ -583,6 +584,25 @@ d.addEventListener('fullscreenchange',function(){if(!isF())chk()});
 d.addEventListener('webkitfullscreenchange',function(){if(!isF())chk()});
 setInterval(chk,700);
 ['keydown','keyup','keypress'].forEach(function(n){window.addEventListener(n,function(ev){if(paused){ev.stopImmediatePropagation();ev.preventDefault()}},true)});
+})();
+</script>
+<script id="selpk-js">
+/* Danh sách chọn đáp án rộng, tự xuống dòng (thay cho dropdown mặc định bị tràn khi đáp án dài) – chỉ dùng với chuột */
+(function(){var d=document,ov=null,st=d.createElement('style');
+st.textContent='#mbox select{max-width:100%;text-overflow:ellipsis}#selpk{position:fixed;inset:0;z-index:2147482000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:14px}'
++'#selpk .spb{width:min(760px,96vw);max-height:84vh;overflow:auto;background:var(--card,#fff);color:var(--ink,#1f2937);border-radius:16px;padding:10px;box-shadow:0 12px 40px rgba(0,0,0,.45);font-family:inherit}'
++'#selpk .spt{font-weight:800;font-size:15px;padding:4px 6px 8px;opacity:.75}'
++'#selpk .spi{padding:11px 14px;margin:5px 0;border:2px solid var(--line,#e5e7eb);border-radius:12px;font-size:17px;line-height:1.4;white-space:normal;overflow-wrap:anywhere;text-align:left;cursor:pointer}'
++'#selpk .spi:hover,#selpk .spi:focus{border-color:#f97316;background:rgba(249,115,22,.12);outline:none}#selpk .spi.on{border-color:#f97316;font-weight:800;background:rgba(249,115,22,.2)}#selpk .spi.nil{font-size:14px;opacity:.7;text-align:center}';
+d.head.appendChild(st);
+function close(){if(ov){ov.remove();ov=null}}
+function open(s){close();ov=d.createElement('div');ov.id='selpk';var b=d.createElement('div');b.className='spb';var t=d.createElement('div');t.className='spt';t.textContent='Chọn đáp án';b.appendChild(t);
+ Array.prototype.forEach.call(s.options,function(o,i){var it=d.createElement('div');it.className='spi'+(o.value===''?' nil':'')+(i===s.selectedIndex&&o.value!==''?' on':'');it.tabIndex=0;it.setAttribute('role','option');it.textContent=o.value===''?'— Bỏ chọn —':o.text;
+  var pick=function(ev){ev.stopPropagation();s.value=o.value;close();s.dispatchEvent(new Event('input',{bubbles:true}));s.dispatchEvent(new Event('change',{bubbles:true}));try{s.focus()}catch(x){}};
+  it.addEventListener('click',pick);it.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();pick(ev)}});b.appendChild(it)});
+ ov.appendChild(b);ov.addEventListener('click',close);d.body.appendChild(ov);var on=b.querySelector('.spi.on');if(on)on.scrollIntoView({block:'center'})}
+d.addEventListener('mousedown',function(e){var s=e.target&&e.target.closest&&e.target.closest('#mbox select');if(!s||s.disabled||e.button!==0)return;if(window.matchMedia&&matchMedia('(pointer:coarse)').matches)return;e.preventDefault();open(s)},true);
+d.addEventListener('keydown',function(e){if(e.key==='Escape')close()},true);
 })();
 </script>
 </body></html>
